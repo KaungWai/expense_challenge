@@ -1,0 +1,54 @@
+.headBar{
+	background-color: #eee;
+	font-size: 24px;
+	font-weight: bold;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	color: #000;
+	box-shadow: 1px 1px 5px #999;
+}
+.general{
+	padding-top: 10px;
+}
+.btnControls{
+	height: 35px;
+	padding-left: 10px;
+	padding-right: 10px;
+	background-color: #fff;
+	border: 1px solid #000;
+	font-size: 16px;
+}
+#sltDMY{
+	border: 1px solid #000;
+	width: 100px;
+	height: 35px;
+	padding: 5px;
+	font-size: 16px;
+	background-color: #fff;
+}
+.plus{
+	border: 1px solid #000;
+	font-size: 16px;
+	background-color: #eee;
+	box-shadow: 1px 1px 5px #555;
+	font-weight: bold;
+	padding: 15px 20px; 
+	text-align: center;
+	position: fixed;
+	bottom: 60px;
+	right: 5px;
+}
+.barNavi{
+	position: fixed;
+	bottom: 0px;
+	border-top: 1px solid #000;
+}
+.btnNavi{
+	text-align: center;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	font-size: 16px;
+}
+.activeNavi{
+	color: #00f;
+}

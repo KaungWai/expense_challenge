@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<script type="text/javascript" src="jquery/jquery.js"></script>
+	<script type="text/javascript" src="js/app.js"></script>
+	<script type="text/javascript" src="chartjs/Chart.bundle.min.js"></script>
+</head>
+<body>
+	<div class="col-xs-12 col-sm-12 col-md-12 headBar">
+	<span class="glyphicon glyphicon-flag"></span> My Expense Challenge
+	</div>
+	<div class="col-xs-12 col-sm-12 col-md-12 general">
+		<select id="sltDMY">
+			<option>Daily</option>
+			<option>Weekly</option>
+			<option>Monthly</option>
+			<option>Yearly</option>
+		</select>
+		<br>
+		<canvas id="chart"></canvas>
+		<canvas id="chart2"></canvas>
+		<br>
+		<button class="btnControls"><span class="glyphicon glyphicon-chevron-left"></span></button>
+		<button class="btnControls"><span class="glyphicon glyphicon-chevron-right"></span></button>
+		<span>07/03/2018</span> - <span>13/03/2018</span>
+		<br>
+		<h4>Current Plan :<br>Super Challenge Series 01</h4>
+	</div>
+	<div class="plus">
+	+
+	</div>
+	<div class="col-xs-12 col-sm-12 col-md-12 barNavi">
+		<div class="col-xs-3 col-sm-3 col-md-3 btnNavi activeNavi">
+			<span class="glyphicon glyphicon-home"></span>
+			<br>
+			Home
+		</div>
+		<div class="col-xs-3 col-sm-3 col-md-3 btnNavi" id="clickCategory">
+			<span class="glyphicon glyphicon-tags"></span>
+			<br>
+			Category
+		</div>
+		<div class="col-xs-3 col-sm-3 col-md-3 btnNavi" id="clickPlan">
+			<span class="glyphicon glyphicon-flag"></span>
+			<br>
+			Plan
+		</div>
+		<div class="col-xs-3 col-sm-3 col-md-3 btnNavi" id="clickLog">
+			<span class="glyphicon glyphicon-list"></span>
+			<br>
+			Log
+		</div>	
+	</div>
+	<script type="text/javascript">
+		var ctx = document.getElementById('chart').getContext('2d');
+		var iChart = new Chart(ctx,{
+			type : 'bar',
+			data : {
+				labels : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+				datasets : [{
+				   label : 'Daily',
+					data : [1000,2400,1200,400,300,650,700]
+				}],
+			}
+		});
+		var ctx = document.getElementById('chart2').getContext('2d');
+		var iChart = new Chart(ctx,{
+			type : 'bar',
+			data : {
+				labels : ['Health', 'Taxi', 'Food', 'Bus', 'Train', 'TV', 'Other'],
+				datasets : [{
+				   label : 'Category',
+					data : [1000,2400,1200,400,300,650,700]
+				}],
+			}
+		});
+
+	</script>
+</body>
+</html>
