@@ -1,17 +1,11 @@
 package com.mdcr.wif;
 
-import com.mdcr.myexpansechallenge.Home;
-import com.mdcr.myexpansechallenge.Category;
-import com.mdcr.myexpansechallenge.Plan;
-import com.mdcr.myexpansechallenge.Log;
+import java.util.List;
 
+import org.json.JSONObject;
 
-import android.app.Activity;
-import android.app.ActivityManager;
-import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.Intent;
 import android.webkit.JavascriptInterface;
 
 public class WebAppInterface {
@@ -24,53 +18,49 @@ public class WebAppInterface {
 	}
 	
 	@JavascriptInterface
-	public String clickHome(){
-		String ret = "";
+	public String addCategory(String categoryName){
 		try{
-			((Activity)mContext).finish();
+			MySQLiteHelper db = new MySQLiteHelper(mContext);
+			db.addCategory(new Category(categoryName));
+			return "1";
 		}
 		catch(Exception e){
-			ret = e.toString();
+			return "0";
 		}
-		return ret;
 	}
+	
 	@JavascriptInterface
-	public String clickCategory(){
-		String ret = "";
+	public String getAllCategories(){
+		String ret = "[";
 		try{
-			Intent i = new Intent(mContext,Category.class);
-			i.setFlags(i.FLAG_ACTIVITY_NO_HISTORY);
-			mContext.startActivity(i);
+			MySQLiteHelper db = new MySQLiteHelper(mContext);
+			List<Category> cats = db.getAllCategories();
+			int i = 1;
+			for (Category cat : cats) {
+				JSONObject catObject = new JSONObject();
+				catObject.put("id", String.valueOf(cat.getId()));
+				catObject.put("name", cat.getName());
+				
+				ret += catObject.toString();
+				if(i<cats.size()){
+					ret += ",";
+				}
+				i++;
+			}
+			ret += "]";
+			return ret;
 		}
 		catch(Exception e){
-			ret = e.toString();
+			return e.toString();
 		}
-		return ret;
 	}
+	
 	@JavascriptInterface
-	public String clickPlan(){
-		String ret = "";
-		try{
-			Intent i = new Intent(mContext,Plan.class);
-			i.setFlags(i.FLAG_ACTIVITY_NO_HISTORY);
-			mContext.startActivity(i);
-		}
-		catch(Exception e){
-			ret = e.toString();
-		}
-		return ret;
-	}
-	@JavascriptInterface
-	public String clickLog(){
-		String ret = "";
-		try{
-			Intent i = new Intent(mContext,Log.class);
-			i.setFlags(i.FLAG_ACTIVITY_NO_HISTORY);
-			mContext.startActivity(i);
-		}
-		catch(Exception e){
-			ret = e.toString();
-		}
-		return ret;
+	public String deleteCategory(String categoryId){
+		MySQLiteHelper db = new MySQLiteHelper(mContext);
+		Category cat = new Category();
+		cat.setId(Integer.parseInt(categoryId));
+		db.deleteCategory(cat);
+		return "1";
 	}
 }
