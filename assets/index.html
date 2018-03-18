@@ -65,7 +65,7 @@
 	<div class="plus">
 	+<span class="glyphicon glyphicon-usd"></span>
 	</div>
-	
+
 	<script type="text/javascript">
 		var ctx = document.getElementById('chart').getContext('2d');
 		var iChart = new Chart(ctx,{
@@ -91,7 +91,7 @@
 		<span id="categoryAutoGenWrapperTag">
 			<!-- generated categories appear in here -->
 			<div class="cat">
-				<span class='glyphicon glyphicon-option-vertical cat_item' cat_id='123'></span>
+				<span class='glyphicon glyphicon-option-vertical cat_item' cat_id='123' cat_name='Test'></span>Test
 			</div>
 		</span>
 		</div>
@@ -99,10 +99,10 @@
 		+<span class="glyphicon glyphicon-tags"></span>
 		</div>
 		<div class="col-xs-12 col-sm-12 col-md-12" id="category-input-box">
-			<span class="box_title">New Category</span>
-			<input type="text" id="category-name" placeholder="Category Name" />
+			<span class="box_title" id="category-input-title"></span>
+			<input type="text" id="category-name" placeholder="Category Name" maxlength="30" />
 			<br>
-			<button class="btnControls" id="btnAddCategoryName">Add</button>
+			<button class="btnControls" id="btnAddCategoryName"></button>
 			<button class="btnControls" id="btnCancelCategoryName">Cancel</button>
 		</div>
 		<div class="col-xs-12 col-sm-12 col-md-12" id="category-option-box">
@@ -113,7 +113,7 @@
 		</div>
 		<div class="col-xs-12 col-sm-12 col-md-12" id="category-confirm-box">
 			<span class="box_title">Are you sure want to delete?</span>
-			<span id="notice">SampleCatgory will be deleted and expanse logs under this category will be moved to Misc.</span>
+			<span id="confirm-notice">SampleCatgory will be deleted and expanse logs under this category will be moved to Misc.</span>
 			<br><br>
 			<button class="btnControls" id="btnYesCategoryName">Yes</button>
 			<button class="btnControls" id="btnNoCategoryName">No</button>
@@ -121,6 +121,7 @@
 	</div><!-- category -->
 
 	<div id="plan-con"><!-- plan -->
+		<input type="datetime-local" name="">
 	<div class="plus">
 		+<span class="glyphicon glyphicon-flag"></span>
 		</div>

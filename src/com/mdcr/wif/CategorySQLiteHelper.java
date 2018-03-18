@@ -12,14 +12,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class MySQLiteHelper extends SQLiteOpenHelper {
+public class CategorySQLiteHelper extends SQLiteOpenHelper {
 
 	// Database Version
 	private static final int DATABASE_VERSION = 1;
 	// Database Name
 	private static final String DATABASE_NAME = "EXPANSE";
 
-	public MySQLiteHelper(Context context) {
+	public CategorySQLiteHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 
@@ -127,7 +127,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 		db.close();
 
 		return i;
-
 	}
 
 	// Deleting single category

@@ -146,7 +146,7 @@
     75%  {background: radial-gradient(circle, #ddd, #eee, #fff);}
     100% {background: radial-gradient(circle, #eee, #fff, #fff);}
 }
-.btnNavi:active{
+.btnNavi:hover{
 	animation: example;
 	animation-duration: 0.5s;
 }
@@ -159,6 +159,10 @@
 	border-radius: 5px;
 	border: 1px solid #000;
 	margin-bottom: 5px;	
+}
+.cat:hover{
+	animation: cat-ani;
+	animation-duration: 0.5s;
 }
 #category-input-box{
 	text-align: center;
@@ -225,6 +229,13 @@
 #btnEditCategoryName , #btnDeleteCategoryName , #btnCancelCategoryOption , #btnYesCategoryName , #btnNoCategoryName{
 	width: 100%;
 	margin-bottom: 10px;
+}
+@keyframes cat-ani {
+    0%   {background: #fff;}
+    25%  {background: #eee;}
+    50%  {background: #ddd;}
+    75%  {background: #ccc;}
+    100% {background: #ddd;}
 }
 /* category-con end */ 
 

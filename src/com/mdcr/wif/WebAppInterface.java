@@ -20,7 +20,7 @@ public class WebAppInterface {
 	@JavascriptInterface
 	public String addCategory(String categoryName){
 		try{
-			MySQLiteHelper db = new MySQLiteHelper(mContext);
+			CategorySQLiteHelper db = new CategorySQLiteHelper(mContext);
 			db.addCategory(new Category(categoryName));
 			return "1";
 		}
@@ -33,7 +33,7 @@ public class WebAppInterface {
 	public String getAllCategories(){
 		String ret = "[";
 		try{
-			MySQLiteHelper db = new MySQLiteHelper(mContext);
+			CategorySQLiteHelper db = new CategorySQLiteHelper(mContext);
 			List<Category> cats = db.getAllCategories();
 			int i = 1;
 			for (Category cat : cats) {
@@ -57,10 +57,19 @@ public class WebAppInterface {
 	
 	@JavascriptInterface
 	public String deleteCategory(String categoryId){
-		MySQLiteHelper db = new MySQLiteHelper(mContext);
+		CategorySQLiteHelper db = new CategorySQLiteHelper(mContext);
 		Category cat = new Category();
 		cat.setId(Integer.parseInt(categoryId));
 		db.deleteCategory(cat);
 		return "1";
+	}
+	
+	@JavascriptInterface
+	public void updateCategory(String categoryId,String categoryNewName){
+		CategorySQLiteHelper db = new CategorySQLiteHelper(mContext);
+		Category cat = new Category();
+		cat.setId(Integer.valueOf(categoryId));
+		cat.setName(categoryNewName);
+		db.updateCategory(cat);
 	}
 }
