@@ -3,10 +3,11 @@ var selected_cat_name = "";
 $(document).ready(function(){
 	$("#plusCategory").click(function(){
 		$(this).hide();
-			$("#overlay").show();
-			$("#category-input-title").html("New Category Name");
-			$("#btnAddCategoryName").html("Add");
-			$("#category-input-box").fadeIn(100);
+		$("#category-name").val(""); // reset text box
+		$("#overlay").show();
+		$("#category-input-title").html("New Category Name");
+		$("#btnAddCategoryName").html("Add");
+		$("#category-input-box").fadeIn(100);
 	});
 
 	$("#btnAddCategoryName").click(function(){
@@ -19,7 +20,7 @@ $(document).ready(function(){
 			addCategory(name);
 		if($(this).html()=="Update")
 			updateCategory(selected_cat_id,name);
-		$("#category-name").val(""); // reset text box
+
 		getAllCategories(); // refresh cat
 	});
 

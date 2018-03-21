@@ -10,6 +10,7 @@
 	<script type="text/javascript" src="js/app.js"></script>
 	<script type="text/javascript" src="js/init.js"></script>
 	<script type="text/javascript" src="js/category.js"></script>
+	<script type="text/javascript" src="js/plan.js"></script>
 	<script type="text/javascript" src="chartjs/Chart.bundle.min.js"></script>
 </head>
 <body>
@@ -32,6 +33,7 @@
 			<div class="stripe"></div>
 		</div>
 	</div>
+	<div class="col-xs-12 col-sm-12 col-md-12" id="pd-top"></div>
 
 	<div id="home-con"><!-- home -->
 	<div class="col-xs-12 col-sm-12 col-md-12 general">
@@ -49,18 +51,21 @@
 		<button class="btnControls"><span class="glyphicon glyphicon-chevron-right"></span></button>
 		</center>
 		<hr>
-		<div class="home_plan_box">
-			<div class="home_plan_title">
-			Goal 1
-			</div>
-			<div class="home_plan_progress_back">
-				<div class="home_plan_progress_front">
+	    <div class="panel panel-default">
+	    <div class="panel-heading">Plan Name 4</div>
+	      	<div class="panel-body">
+	      	<span class="plan_start_date">03/07/2018</span>
+			<span class="plan_amount">50000</span>
+			<span class="plan_end_date">03/08/2018</span>
+			<br>
+	      		<div class="progress">
+					<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%">
+					10%
+					</div>
 				</div>
-			</div>
-			<div class="home_plan_info">
-				37500 used, 50000 left
-			</div>
-		</div>
+				Succeed
+	    	</div>
+	    </div>
 	</div>
 	<div class="plus">
 	+<span class="glyphicon glyphicon-usd"></span>
@@ -121,14 +126,90 @@
 	</div><!-- category -->
 
 	<div id="plan-con"><!-- plan -->
-		<input type="datetime-local" name="">
-	<div class="plus">
-		+<span class="glyphicon glyphicon-flag"></span>
+		<div class="col-xs-12 col-sm-12 col-md-12 general">
+			<span style="font-size: 18px;font-weight: bold;">Current Plan</span>
+		    <div class="panel panel-default">
+		    <div class="panel-heading">Plan Name 4</div>
+		      	<div class="panel-body">
+		      	<span class="plan_start_date">03/07/2018</span>
+				<span class="plan_amount">50000</span>
+				<span class="plan_end_date">03/08/2018</span>
+				<br>
+		      		<div class="progress">
+						<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%">
+						10%
+						</div>
+					</div>
+					Succeed
+		    	</div>
+		    </div>
+			<hr>
+			<span style="font-size: 18px;font-weight: bold;">Older Plans</span>
+		    <div class="panel panel-default">
+		    <div class="panel-heading">Plan Name 4</div>
+		      	<div class="panel-body">
+		      	<span class="plan_start_date">03/07/2018</span>
+				<span class="plan_amount">50000</span>
+				<span class="plan_end_date">03/08/2018</span>
+				<br>
+		      		<div class="progress">
+						<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%">
+						10%
+						</div>
+					</div>
+					Succeed
+		    	</div>
+		    </div>
+		    <div class="panel panel-default">
+		    <div class="panel-heading">Plan Name 4</div>
+		      	<div class="panel-body">
+		      	<span class="plan_start_date">03/07/2018</span>
+				<span class="plan_amount">50000</span>
+				<span class="plan_end_date">03/08/2018</span>
+				<br>
+		      		<div class="progress">
+						<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%">
+						10%
+						</div>
+					</div>
+					Succeed
+		    	</div>
+		    </div>
+		    <div class="panel panel-default">
+		    <div class="panel-heading">Plan Name 4</div>
+		      	<div class="panel-body">
+		      	<span class="plan_start_date">03/07/2018</span>
+				<span class="plan_amount">50000</span>
+				<span class="plan_end_date">03/08/2018</span>
+				<br>
+		      		<div class="progress">
+						<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%">
+						10%
+						</div>
+					</div>
+					Succeed
+		    	</div>
+		    </div>
+		</div>
+		<div class="plus" id="btnPlusPlan">
+			+<span class="glyphicon glyphicon-flag"></span>
+		</div>
+
+		<div id="create_new_plan_box">
+			<span class="box_title">New Plan</span>
+			<input type="text" id="new_plan_name" placeholder="Plan Name">
+			<br>
+			<input type="date" id="new_plan_start_date" class="dateInput"/><span id="karamade">~</span><input type="date" id="new_plan_end_date" class="dateInput" />
+			<br>
+			<input type="number" id="new_plan_amount" placeholder="Amount">
+			<br>
+			<button class="btnControls" id="btnCreatPlan">Create</button>
+			<button class="btnControls" id="btnCancelPlan">Cancel</button>
 		</div>
 	</div><!-- plan -->
 
 	<div id="log-con"><!-- log -->
-		
+
 	</div><!-- log -->
 	
 	<div class="col-xs-12 col-sm-12 col-md-12" id="pd-btn"></div>

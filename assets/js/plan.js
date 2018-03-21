@@ -1,0 +1,12 @@
+$(document).ready(function(){
+	$("#btnPlusPlan").click(function(){
+		$(this).hide();
+			$("#overlay").show();
+			$("#create_new_plan_box").fadeIn(100);
+	});
+	$("#btnCancelPlan").click(function(){
+		$("#overlay").hide();
+		$("#create_new_plan_box").hide();
+		$("#btnPlusPlan").show();
+	});
+});
