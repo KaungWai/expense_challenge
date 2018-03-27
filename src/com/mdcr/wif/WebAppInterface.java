@@ -20,7 +20,7 @@ public class WebAppInterface {
 	@JavascriptInterface
 	public String addCategory(String categoryName){
 		try{
-			CategorySQLiteHelper db = new CategorySQLiteHelper(mContext);
+			SQLiteHelper db = new SQLiteHelper(mContext);
 			db.addCategory(new Category(categoryName));
 			return "1";
 		}
@@ -33,7 +33,7 @@ public class WebAppInterface {
 	public String getAllCategories(){
 		String ret = "[";
 		try{
-			CategorySQLiteHelper db = new CategorySQLiteHelper(mContext);
+			SQLiteHelper db = new SQLiteHelper(mContext);
 			List<Category> cats = db.getAllCategories();
 			int i = 1;
 			for (Category cat : cats) {
@@ -57,7 +57,7 @@ public class WebAppInterface {
 	
 	@JavascriptInterface
 	public String deleteCategory(String categoryId){
-		CategorySQLiteHelper db = new CategorySQLiteHelper(mContext);
+		SQLiteHelper db = new SQLiteHelper(mContext);
 		Category cat = new Category();
 		cat.setId(Integer.parseInt(categoryId));
 		db.deleteCategory(cat);
@@ -66,10 +66,86 @@ public class WebAppInterface {
 	
 	@JavascriptInterface
 	public void updateCategory(String categoryId,String categoryNewName){
-		CategorySQLiteHelper db = new CategorySQLiteHelper(mContext);
+		SQLiteHelper db = new SQLiteHelper(mContext);
 		Category cat = new Category();
 		cat.setId(Integer.valueOf(categoryId));
 		cat.setName(categoryNewName);
 		db.updateCategory(cat);
+	}
+	
+	@JavascriptInterface
+	public String addPlan(String name,String startDate, String endDate, int amount){
+		SQLiteHelper db = new SQLiteHelper(mContext);
+		Plan p = new Plan();
+		p.setName(name);
+		p.setStartDate(startDate);
+		p.setEndDate(endDate);
+		p.setAmount(amount);
+		p.setStatus(0);
+		return db.addPlan(p);
+	}
+	
+	@JavascriptInterface
+	public String getCurrentPlan(){
+		String ret = "[";
+		try{
+			SQLiteHelper db = new SQLiteHelper(mContext);
+			List<Plan> ps = db.getCurrentPlan();
+			int i = 1;
+			for (Plan p : ps) {
+				JSONObject pObject = new JSONObject();
+				pObject.put("id", String.valueOf(p.getId()));
+				pObject.put("name", p.getName());
+				pObject.put("amount", p.getAmount());
+				pObject.put("startDate",p.getStartDate());
+				pObject.put("endDate",p.getEndDate());
+				
+				ret += pObject.toString();
+				if(i<ps.size()){
+					ret += ",";
+				}
+				i++;
+			}
+			ret += "]";
+			return ret;
+		}
+		catch(Exception e){
+			return e.toString();
+		}
+	}
+	
+	@JavascriptInterface
+	public String getOlderPlans(){
+		String ret = "[";
+		try{
+			SQLiteHelper db = new SQLiteHelper(mContext);
+			List<Plan> ps = db.getOlderPlans();
+			int i = 1;
+			for (Plan p : ps) {
+				JSONObject pObject = new JSONObject();
+				pObject.put("id", String.valueOf(p.getId()));
+				pObject.put("name", p.getName());
+				pObject.put("startDate",p.getStartDate());
+				pObject.put("endDate",p.getEndDate());
+				pObject.put("status", p.getStatus());
+				
+				ret += pObject.toString();
+				if(i<ps.size()){
+					ret += ",";
+				}
+				i++;
+			}
+			ret += "]";
+			return ret;
+		}
+		catch(Exception e){
+			return e.toString();
+		}		
+	}
+	
+	@JavascriptInterface
+	public int checkCurrentPlan(){
+		SQLiteHelper db = new SQLiteHelper(mContext);
+		return db.checkCurrentPlan();
 	}
 }

@@ -58,6 +58,7 @@
 }
 .general{
 	padding-top: 10px;
+	z-index: 10;
 }
 .btnControls{
 	height: 35px;
@@ -97,6 +98,7 @@
 	bottom: 60px;
 	right: 5px;
 	border-radius: 5px;
+	z-index: 12;
 }
 .plus:active{
 	animation: example;
@@ -107,6 +109,7 @@
 	bottom: 0px;
 	border-top: 1px solid #000;
 	background-color: #fff;
+	z-index: 11;
 }
 .btnNavi{
 	text-align: center;

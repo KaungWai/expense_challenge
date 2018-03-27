@@ -5,14 +5,14 @@ import java.sql.Date;
 public class Plan {
 	 private int id;
 	 private String name;
-	 private Date startDate;
-	 private Date endDate;
+	 private String startDate;
+	 private String endDate;
 	 private int amount;
-	 private String status;
+	 private int status;
 	 
 	 public Plan(){}
 	 
-	 public Plan(String name, Date startDate, Date endDate, int amount, String status) {
+	 public Plan(String name, String startDate, String endDate, int amount, int status) {
 		 super();
 		 this.name = name;
 	     this.startDate = startDate;
@@ -23,7 +23,7 @@ public class Plan {
 	    
 	 @Override
 	 public String toString() {
-		 return "Plan [id=" + id + ", startDate=" + startDate + ", endDate=" + endDate + "amount=" + amount + "status=" + status + "]";
+		 return "Plan [id=" + id + ", startDate=" + startDate + ", endDate=" + endDate + ", amount=" + amount + ", status=" + status + "]";
 	 }
 	    
 	 //getters & setters
@@ -43,19 +43,19 @@ public class Plan {
 		this.name = name;
 	}
 
-	public Date getStartDate() {
+	public String getStartDate() {
 		return startDate;
 	 }
 
-	 public void setStartDate(Date startDate) {
+	 public void setStartDate(String startDate) {
 		 this.startDate = startDate;
 	 }
 	 
-	 public Date getEndDate() {
+	 public String getEndDate() {
 			return endDate;
 		 }
 
-	 public void setEndDate(Date endDate) {
+	 public void setEndDate(String endDate) {
 		 this.endDate = endDate;
 	 }
 	
@@ -67,11 +67,11 @@ public class Plan {
 		 this.amount = amount;
 	 }
 
-	 public String getStatus() {
+	 public int getStatus() {
 			return status;
 		 }
 
-	 public void setStatus(String status) {
+	 public void setStatus(int status) {
 		 this.status = status;
 	 }
 
