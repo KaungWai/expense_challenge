@@ -72,7 +72,7 @@ public class WebAppInterface {
 		cat.setName(categoryNewName);
 		db.updateCategory(cat);
 	}
-	
+//----------------------------------------------------------------------------------------------------------//
 	@JavascriptInterface
 	public String addPlan(String name,String startDate, String endDate, int amount){
 		SQLiteHelper db = new SQLiteHelper(mContext);
@@ -142,10 +142,49 @@ public class WebAppInterface {
 			return e.toString();
 		}		
 	}
-	
 	@JavascriptInterface
 	public int checkCurrentPlan(){
 		SQLiteHelper db = new SQLiteHelper(mContext);
 		return db.checkCurrentPlan();
+	}
+//----------------------------------------------------------------------------------------------------------//
+	@JavascriptInterface
+	public String addExpense(float amount, String dateTime, int categoryId, String remark){
+		Expense e = new Expense();
+		e.setAmount(amount);
+		e.setDateTime(dateTime);
+		e.setCategoryId(categoryId);
+		e.setRemark(remark);
+		
+		SQLiteHelper db = new SQLiteHelper(mContext);
+		return db.addExpense(e);
+	}
+	
+	@JavascriptInterface
+	public String getExpensesByPlanId(int planId){
+		String ret = "[";
+		try{
+			SQLiteHelper db = new SQLiteHelper(mContext);
+			List<Expense> es = db.getExpensesByPlanId(planId);
+			int i = 1;
+			for (Expense e : es) {
+				JSONObject eObject = new JSONObject();
+				eObject.put("id", String.valueOf(e.getId()));
+				eObject.put("amount", e.getAmount());
+				eObject.put("dateTime", e.getDateTime());
+				eObject.put("categoryName", e.getCategoryName());
+				eObject.put("remark", e.getRemark());
+				
+				ret += eObject.toString();
+				if(i < es.size()){
+					ret += ",";
+				}
+				i++;
+			}
+			return ret;
+		}
+		catch(Exception e){
+			return e.toString();
+		}
 	}
 }
