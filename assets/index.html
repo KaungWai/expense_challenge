@@ -95,13 +95,14 @@
 			<span class="box_title">New Expense</span>
 			<input type="number" placeholder="Amount" id="new_expense_amount">
 			<br>
-			<input type="datetime-local" min="2018-03-27" id="new_expane_date_time"/>
+			<input type="datetime-local" min="2018-03-27" id="new_expense_date_time"/>
 			<br>
 			<select id="new_expanse_category_select">
-				<option>Select Category</option>
-				<option>Kaung Wai</option>
-				<option>Su Wai</option>
-				<option>Misc</option>
+				<option>a</option>
+				<option value="1">A</option>
+				<option value="2">B</option>
+				<option value="3">C</option>
+				<option value="4">D</option>
 			</select>
 			<textarea id="new_expense_remark" rows="1" class="keyboard_input" placeholder="Remark"></textarea>
 			<br>
@@ -193,7 +194,26 @@
 	</div><!-- plan -->
 
 	<div id="log-con"><!-- log -->
-	
+		<div class="col-xs-12 col-sm-12 col-md-12 general">
+			<select id="view_log_plan_select" class="btnControls" onchange="getExpensesByPlanId(this.value);">
+
+
+
+			</select>
+			<br>
+			<span id="logAutoGeneratorTag">
+			<div class="panel panel-default">
+		    	<div class="panel-heading">
+		    		<span class='log_category_name'>Taxi</span>
+		    		<span class='log_expense_amount'>3000</span>
+		    	</div>
+		      	<div class="panel-body align-left">
+		      		<h5 class='log_expense_dateTime'>03:03 AM 03/03/2017</h5>
+		      		<span class='log_expense_remark'>Something</span>
+		    	</div>
+		    </div> 
+			</span>
+		</div>
 	</div><!-- log -->
 	
 	<div class="col-xs-12 col-sm-12 col-md-12" id="pd-btn"></div>

@@ -1,4 +1,5 @@
 $(document).ready(function(){
+	try{
 	$("#btnPlusPlan").click(function(){
 		$(this).hide();
 		$("#overlay").show();
@@ -16,9 +17,15 @@ $(document).ready(function(){
 		addPlan();
 		getCurrentPlan();
 		getOlderPlans();
+		planSelectBoxGenerate();
 	});
+	
 	getCurrentPlan();
 	getOlderPlans();
+	}
+	catch(e){
+		alert("Plan.js Error:"+e);
+	}
 });
 
 function getCurrentPlan(){

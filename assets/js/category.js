@@ -22,6 +22,7 @@ $(document).ready(function(){
 			updateCategory(selected_cat_id,name);
 
 		getAllCategories(); // refresh cat
+		categorySelectBoxGenerate();
 	});
 
 	$("#btnCancelCategoryName").click(function(){

@@ -11,11 +11,11 @@ public class Expense {
 	 
 	 public Expense(){}
 	 
-	 public Expense(int planId, int categoryId, String expandDate, float amount, String remark) {
+	 public Expense(int planId, int categoryId, String dateTime, float amount, String remark) {
 		 super();
 		 this.planId = planId;
 	     this.categoryId = categoryId;
-	     this.dateTime = expandDate;
+	     this.dateTime = dateTime;
 	     this.amount = amount;
 	     this.remark = remark;
 	 }
@@ -62,8 +62,8 @@ public class Expense {
 		return dateTime;
 	 }
 
-	 public void setDateTime(String expenseDate) {
-		 this.dateTime = expenseDate;
+	 public void setDateTime(String dateTime) {
+		 this.dateTime = dateTime;
 	 }
 	 
 	 public float getAmount() {
@@ -81,6 +81,4 @@ public class Expense {
 	 public void setRemark(String remark) {
 		 this.remark = remark;
 	 }
-
-
 }

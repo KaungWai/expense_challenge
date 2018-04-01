@@ -1,5 +1,7 @@
 package com.mdcr.wif;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,7 +32,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 		// Plan Table
 		String CREATE_PLAN_TABLE = "CREATE TABLE PlanDB (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, startDate TEXT, endDate TEXT, amount INTEGER, status INTEGER)";
 		// Expense Table
-		String CREATE_EXPENSE_TABLE = "CREATE TABLE ExpenseDB (id INTEGER PRIMARY KEY AUTOINCREMENT, FOREIGN KEY(categoryId) REFERENCES CategoryDB(id), FOREIGN KEY(planId) REFERENCES PlanDB(id), enpandDateTime TEXT, amount REAL, remark TEXT)";
+		String CREATE_EXPENSE_TABLE = "CREATE TABLE ExpenseDB (id INTEGER PRIMARY KEY AUTOINCREMENT, categoryId INTEGER, planId INTEGER, expenseDateTime TEXT, amount REAL, remark TEXT, FOREIGN KEY (categoryId) REFERENCES CategoryDB (id) , FOREIGN KEY (PlanId) REFERENCES PlanDB(id))";
 
 		// create Category table
 		db.execSQL(CREATE_CATEGORY_TABLE);
@@ -80,7 +82,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 	private static final String KEY_EXPENSE_ID = "id";
 	private static final String KEY_EXPENSE_PLANID = "planId";
 	private static final String KEY_EXPENSE_CATEGORYID = "categoryId";
-	private static final String KEY_EXPENSE_DATE = "expenseDateTime";
+	private static final String KEY_EXPENSE_DATE_TIME = "expenseDateTime";
 	private static final String KEY_EXPENSE_AMOUNT = "amount";
 	private static final String KEY_EXPENSE_REMARK = "remark";
 	// -----------------------------------------------------------------------//
@@ -258,8 +260,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 			} while (cursor.moveToNext());
 		}
 
-		Log.d("getAllPlans()", plans.toString());
-
 		// return categories
 		return plans;
 	}
@@ -296,7 +296,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor cursor = db.rawQuery(query, null);
 
-		if (cursor.getCount() > 0) {
+		if (cursor.moveToFirst()) {
 			return cursor.getInt(0);
 		} else {
 			return 0; // there is no current plan
@@ -305,23 +305,30 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 	//---------------------------------------------------------------------//
 	// add expenses
 	public String addExpense(Expense expense) {
-		// 1. get reference to writable DB
-		SQLiteDatabase db = this.getWritableDatabase();
+		try{
+			// 1. get reference to writable DB
+			SQLiteDatabase db = this.getWritableDatabase();
 
-		// 2. create ContentValues to add key "column"/value
-		ContentValues values = new ContentValues();
-		values.put(KEY_EXPENSE_PLANID, checkCurrentPlan());
-		values.put(KEY_EXPENSE_CATEGORYID, expense.getCategoryId());
-		values.put(KEY_EXPENSE_DATE, expense.getDateTime()); // get startDate
-		values.put(KEY_EXPENSE_AMOUNT, expense.getAmount());
-		values.put(KEY_EXPENSE_REMARK, expense.getRemark());
+			// 2. create ContentValues to add key "column"/value
+			ContentValues values = new ContentValues();
+			values.put(KEY_EXPENSE_PLANID, checkCurrentPlan());
+			values.put(KEY_EXPENSE_CATEGORYID, expense.getCategoryId());
+			values.put(KEY_EXPENSE_DATE_TIME, expense.getDateTime());
+			values.put(KEY_EXPENSE_AMOUNT, expense.getAmount());
+			values.put(KEY_EXPENSE_REMARK, expense.getRemark());
 
-		// 3. insert
-		db.insert(TABLE_PLANS, null, values);
+			// 3. insert
+			db.insert(TABLE_EXPENSE, null, values);
 
-		// 4. close
-		db.close();
-		return expense.toString();
+			// 4. close
+			db.close();
+			return expense.toString();
+		}
+		catch(Exception e){
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			return errors.toString();
+		}
 	}
 	
 	// Get expenses by Plan
@@ -329,7 +336,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 			List<Expense> expenses = new LinkedList<Expense>();
 
 			// 1. build the query
-			String query = "SELECT * FROM " + TABLE_EXPENSE + " WHERE planId = " + planId;
+			String query = "SELECT E.id, E.planId, E.categoryId, C.name, E.expenseDateTime, E.amount, E.remark FROM " + TABLE_EXPENSE + " E LEFT OUTER JOIN " + TABLE_CATEGORIES + " C ON E.categoryId = C.id WHERE E.planId = " + planId;
 
 			// 2. get reference to writable DB
 			SQLiteDatabase db = this.getWritableDatabase();
@@ -343,18 +350,17 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 					expense.setId(cursor.getInt(0));
 					expense.setPlanId(cursor.getInt(1));
 					expense.setCategoryId(cursor.getInt(2));
-					expense.setDateTime(cursor.getString(3));
-					expense.setAmount(cursor.getFloat(4));
-					expense.setRemark(cursor.getString(5));
+					expense.setCategoryName(cursor.getString(3));
+					expense.setDateTime(cursor.getString(4));
+					expense.setAmount(cursor.getFloat(5));
+					expense.setRemark(cursor.getString(6));
 
 					// Add expand to expands
 					expenses.add(expense);
 				} while (cursor.moveToNext());
 			}
-
-			Log.d("getExpandsOfCurrentPlan()", expense.toString());
-
-			// return expands
+			
+			// return expenses
 			return expenses;
 		}
 }

@@ -143,17 +143,22 @@ public class WebAppInterface {
 		}		
 	}
 	@JavascriptInterface
-	public int checkCurrentPlan(){
-		SQLiteHelper db = new SQLiteHelper(mContext);
-		return db.checkCurrentPlan();
+	public String checkCurrentPlan(){
+		try{
+			SQLiteHelper db = new SQLiteHelper(mContext);
+			return String.valueOf(db.checkCurrentPlan());
+		}
+		catch(Exception e){
+			return e.toString();
+		}
 	}
 //----------------------------------------------------------------------------------------------------------//
 	@JavascriptInterface
-	public String addExpense(float amount, String dateTime, int categoryId, String remark){
+	public String addExpense(String amount, String dateTime, String categoryId, String remark){
 		Expense e = new Expense();
-		e.setAmount(amount);
+		e.setAmount(Float.valueOf(amount));
 		e.setDateTime(dateTime);
-		e.setCategoryId(categoryId);
+		e.setCategoryId(Integer.valueOf(categoryId));
 		e.setRemark(remark);
 		
 		SQLiteHelper db = new SQLiteHelper(mContext);
@@ -161,11 +166,11 @@ public class WebAppInterface {
 	}
 	
 	@JavascriptInterface
-	public String getExpensesByPlanId(int planId){
+	public String getExpensesByPlanId(String planId){
 		String ret = "[";
 		try{
 			SQLiteHelper db = new SQLiteHelper(mContext);
-			List<Expense> es = db.getExpensesByPlanId(planId);
+			List<Expense> es = db.getExpensesByPlanId(Integer.valueOf(planId));
 			int i = 1;
 			for (Expense e : es) {
 				JSONObject eObject = new JSONObject();
@@ -181,6 +186,7 @@ public class WebAppInterface {
 				}
 				i++;
 			}
+			ret += "]";
 			return ret;
 		}
 		catch(Exception e){

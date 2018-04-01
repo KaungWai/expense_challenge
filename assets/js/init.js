@@ -12,5 +12,11 @@ $(document).ready(function(){
 		"height":naviBarHeight+"px"
 	});
 
-	getAllCategories();
+	try{
+		getAllCategories();
+	}
+	catch(e){
+		alert("init.js Error:"+e);
+	}
+	
 });
