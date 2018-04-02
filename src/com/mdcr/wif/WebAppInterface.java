@@ -154,10 +154,11 @@ public class WebAppInterface {
 	}
 //----------------------------------------------------------------------------------------------------------//
 	@JavascriptInterface
-	public String addExpense(String amount, String dateTime, String categoryId, String remark){
+	public String addExpense(String amount, String date, String time, String categoryId, String remark){
 		Expense e = new Expense();
 		e.setAmount(Float.valueOf(amount));
-		e.setDateTime(dateTime);
+		e.setDate(date);
+		e.setTime(time);
 		e.setCategoryId(Integer.valueOf(categoryId));
 		e.setRemark(remark);
 		
@@ -176,7 +177,8 @@ public class WebAppInterface {
 				JSONObject eObject = new JSONObject();
 				eObject.put("id", String.valueOf(e.getId()));
 				eObject.put("amount", e.getAmount());
-				eObject.put("dateTime", e.getDateTime());
+				eObject.put("date", e.getDate());
+				eObject.put("time", e.getTime());
 				eObject.put("categoryName", e.getCategoryName());
 				eObject.put("remark", e.getRemark());
 				
@@ -192,5 +194,27 @@ public class WebAppInterface {
 		catch(Exception e){
 			return e.toString();
 		}
+	}
+	
+	@JavascriptInterface
+	public String getGraphDataByPlanId(String planId) throws Exception{
+		String ret = "[";
+		SQLiteHelper db = new SQLiteHelper(mContext);
+		List<GraphData> graphDataList = db.getGraphDataByPlanId(Integer.valueOf(planId));
+		
+		int i = 1;
+		for (GraphData graphData : graphDataList) {
+			JSONObject graphDataObject = new JSONObject();
+			graphDataObject.put("date", graphData.getDate());
+			graphDataObject.put("amount", graphData.getAmount());
+			
+			ret += graphDataObject.toString();
+			if(i < graphDataList.size()){
+				ret += ",";
+			}
+			i++;
+		}
+		ret += "]";
+		return ret;
 	}
 }

@@ -75,9 +75,8 @@
 	animation: example;
 	animation-duration: 0.5s;
 }
-#sltDMY{
+#sltPlan{
 	border: 1px solid #000;
-	width: 90px;
 	height: 35px;
 	padding: 5px;
 	font-size: 16px;

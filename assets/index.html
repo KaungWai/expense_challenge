@@ -38,19 +38,11 @@
 
 	<div id="home-con"><!-- home -->
 	<div class="col-xs-12 col-sm-12 col-md-12 general">
-		<select id="sltDMY">
-			<option>Daily</option>
-			<option>Weekly</option>
-			<option>Monthly</option>
-			<option>Yearly</option>
+		<select id="sltPlan" onchange="getGraphDataByPlanId(this.value);">
+
 		</select>
 		<br><br>
 		<canvas id="chart"></canvas>
-		<center>
-		<button class="btnControls"><span class="glyphicon glyphicon-chevron-left"></span></button>
-		<span id="dateString">07/03/2018 - 13/03/2018</span>
-		<button class="btnControls"><span class="glyphicon glyphicon-chevron-right"></span></button>
-		</center>
 		<hr>
 	    <div class="panel panel-default">
 	    <div class="panel-heading">Plan Name 4</div>
@@ -71,25 +63,6 @@
 	<div class="plus" id="btnExpansePlus">
 	+<span class="glyphicon glyphicon-usd"></span>
 	</div>
-
-	<script type="text/javascript">
-		var ctx = document.getElementById('chart').getContext('2d');
-		var iChart = new Chart(ctx,{
-			type : 'bar',
-			data : {
-				labels : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-				datasets : [{
-				   label : 'Daily',
-					data : [1000,2400,1200,400,300,650,700]
-				}],
-			},
-			options: {
-		        legend: {
-		            display : false
-		        }
-		    }
-		});
-	</script>
 
 		<div id="expense_input_box">
 			<span class="box_title">New Expense</span>
@@ -202,16 +175,7 @@
 			</select>
 			<br>
 			<span id="logAutoGeneratorTag">
-			<div class="panel panel-default">
-		    	<div class="panel-heading">
-		    		<span class='log_category_name'>Taxi</span>
-		    		<span class='log_expense_amount'>3000</span>
-		    	</div>
-		      	<div class="panel-body align-left">
-		      		<h5 class='log_expense_dateTime'>03:03 AM 03/03/2017</h5>
-		      		<span class='log_expense_remark'>Something</span>
-		    	</div>
-		    </div> 
+
 			</span>
 		</div>
 	</div><!-- log -->

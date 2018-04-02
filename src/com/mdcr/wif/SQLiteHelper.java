@@ -32,7 +32,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 		// Plan Table
 		String CREATE_PLAN_TABLE = "CREATE TABLE PlanDB (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, startDate TEXT, endDate TEXT, amount INTEGER, status INTEGER)";
 		// Expense Table
-		String CREATE_EXPENSE_TABLE = "CREATE TABLE ExpenseDB (id INTEGER PRIMARY KEY AUTOINCREMENT, categoryId INTEGER, planId INTEGER, expenseDateTime TEXT, amount REAL, remark TEXT, FOREIGN KEY (categoryId) REFERENCES CategoryDB (id) , FOREIGN KEY (PlanId) REFERENCES PlanDB(id))";
+		String CREATE_EXPENSE_TABLE = "CREATE TABLE ExpenseDB (id INTEGER PRIMARY KEY AUTOINCREMENT, categoryId INTEGER, planId INTEGER, date TEXT, time TEXT, amount REAL, remark TEXT, FOREIGN KEY (categoryId) REFERENCES CategoryDB (id) , FOREIGN KEY (PlanId) REFERENCES PlanDB(id))";
 
 		// create Category table
 		db.execSQL(CREATE_CATEGORY_TABLE);
@@ -82,7 +82,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 	private static final String KEY_EXPENSE_ID = "id";
 	private static final String KEY_EXPENSE_PLANID = "planId";
 	private static final String KEY_EXPENSE_CATEGORYID = "categoryId";
-	private static final String KEY_EXPENSE_DATE_TIME = "expenseDateTime";
+	private static final String KEY_EXPENSE_DATE = "date";
+	private static final String KEY_EXPENSE_TIME = "time";
 	private static final String KEY_EXPENSE_AMOUNT = "amount";
 	private static final String KEY_EXPENSE_REMARK = "remark";
 	// -----------------------------------------------------------------------//
@@ -313,7 +314,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 			ContentValues values = new ContentValues();
 			values.put(KEY_EXPENSE_PLANID, checkCurrentPlan());
 			values.put(KEY_EXPENSE_CATEGORYID, expense.getCategoryId());
-			values.put(KEY_EXPENSE_DATE_TIME, expense.getDateTime());
+			values.put(KEY_EXPENSE_DATE, expense.getDate());
+			values.put(KEY_EXPENSE_TIME, expense.getTime());
 			values.put(KEY_EXPENSE_AMOUNT, expense.getAmount());
 			values.put(KEY_EXPENSE_REMARK, expense.getRemark());
 
@@ -336,13 +338,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 			List<Expense> expenses = new LinkedList<Expense>();
 
 			// 1. build the query
-			String query = "SELECT E.id, E.planId, E.categoryId, C.name, E.expenseDateTime, E.amount, E.remark FROM " + TABLE_EXPENSE + " E LEFT OUTER JOIN " + TABLE_CATEGORIES + " C ON E.categoryId = C.id WHERE E.planId = " + planId;
+			String query = "SELECT E.id, E.planId, E.categoryId, C.name, E.date, E.time, E.amount, E.remark FROM " + TABLE_EXPENSE + " E LEFT OUTER JOIN " + TABLE_CATEGORIES + " C ON E.categoryId = C.id WHERE E.planId = " + planId;
 
 			// 2. get reference to writable DB
 			SQLiteDatabase db = this.getWritableDatabase();
 			Cursor cursor = db.rawQuery(query, null);
 
-			// 3. go over each row, build expand and add it to list
+			// 3. go over each row, build expense and add it to list
 			Expense expense = null;
 			if (cursor.moveToFirst()) {
 				do {
@@ -351,9 +353,10 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 					expense.setPlanId(cursor.getInt(1));
 					expense.setCategoryId(cursor.getInt(2));
 					expense.setCategoryName(cursor.getString(3));
-					expense.setDateTime(cursor.getString(4));
-					expense.setAmount(cursor.getFloat(5));
-					expense.setRemark(cursor.getString(6));
+					expense.setDate(cursor.getString(4));
+					expense.setTime(cursor.getString(5));
+					expense.setAmount(cursor.getFloat(6));
+					expense.setRemark(cursor.getString(7));
 
 					// Add expand to expands
 					expenses.add(expense);
@@ -362,5 +365,32 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 			
 			// return expenses
 			return expenses;
+		}
+		
+		public List<GraphData> getGraphDataByPlanId(int planId){
+			
+			List<GraphData> graphDataList = new LinkedList<GraphData>();
+			
+			// 1. Build the query
+			String query = "SELECT SUM(amount) AS amount, date from ExpenseDB WHERE planId = " + planId + " GROUP BY date";
+			
+			// 2. get reference to writable DB
+			SQLiteDatabase db = this.getWritableDatabase();
+			Cursor cursor = db.rawQuery(query, null);
+			
+			// 3. go over each row, build graphData and add it to list
+			GraphData graphData = null;
+			if (cursor.moveToFirst()) {
+				do {
+					graphData = new GraphData();
+					
+					graphData.setAmount(cursor.getFloat(0));
+					graphData.setDate(cursor.getString(1));
+					
+					graphDataList.add(graphData);
+				} while (cursor.moveToNext());
+			}
+			
+			return graphDataList;
 		}
 }

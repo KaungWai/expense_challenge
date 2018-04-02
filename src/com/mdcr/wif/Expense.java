@@ -5,24 +5,34 @@ public class Expense {
 	 private int planId;
 	 private int categoryId;
 	 private String categoryName;
-	 private String dateTime;
+	 private String date;
+	 private String time;
 	 private float amount;
 	 private String remark;
 	 
 	 public Expense(){}
 	 
-	 public Expense(int planId, int categoryId, String dateTime, float amount, String remark) {
+	 public Expense(int planId, int categoryId, String date, String time, float amount, String remark) {
 		 super();
 		 this.planId = planId;
 	     this.categoryId = categoryId;
-	     this.dateTime = dateTime;
+	     this.date = date;
+	     this.time = time;
 	     this.amount = amount;
 	     this.remark = remark;
 	 }
 	    
 	 @Override
 	 public String toString() {
-		 return "Expense [expensedId=" + id + ", planId=" + planId + ", categoryID=" + categoryId + ", expenseDate=" + dateTime + ", amount=" + amount + ", remark=" + remark + "]";
+		 return "Expense [" +
+		 		"expensedId=" + id + 
+		 		", planId=" + planId + 
+		 		", categoryID=" + categoryId +
+		 		", expenseDate=" + date + 
+		 		", expenseTime=" + time + 
+		 		", amount=" + amount + 
+		 		", remark=" + remark +
+		 		"]";
 	 }
 	    
 	 //getters & setters
@@ -58,12 +68,20 @@ public class Expense {
 		this.categoryName = categoryName;
 	 }
 	
-	 public String getDateTime() {
-		return dateTime;
+	 public String getDate() {
+		return date;
 	 }
 
-	 public void setDateTime(String dateTime) {
-		 this.dateTime = dateTime;
+	 public void setDate(String date) {
+		 this.date = date;
+	 }
+	 
+	 public String getTime() {
+		 return time;
+	 }
+	 
+	 public String setTime(String time) {
+		 return time;
 	 }
 	 
 	 public float getAmount() {

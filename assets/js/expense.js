@@ -26,6 +26,7 @@ $(document).ready(function(){
 		planSelectBoxGenerate();
 		var planId = Android.checkCurrentPlan();
 		getExpensesByPlanId(planId);
+		getGraphDataByPlanId(planId);
 	}
 	catch(e){
 		alert("expense.js "+e);
@@ -35,9 +36,13 @@ $(document).ready(function(){
 function addExpense(){
 	var amount = $("#new_expense_amount").val();
 	var dateTime = $("#new_expense_date_time").val();
+	var date = dateTime.substring(0, 10);
+	var time = dateTime.substring(11, 16);
 	var categoryId = $("#new_expanse_category_select").val();
 	var remark = $("#new_expense_remark").val();
-	Android.addExpense(amount,dateTime,categoryId,remark);
+	Android.addExpense(amount, date, time, categoryId, remark);
+	var planId = Android.checkCurrentPlan();
+	getGraphDataByPlanId(planId);
 }
 
 function planSelectBoxGenerate(){
@@ -63,9 +68,11 @@ function planSelectBoxGenerate(){
 		}
 
 		$("#view_log_plan_select").html(content);
+		$("#sltPlan").html(content);
 	}
 	catch(e){
 		$("#view_log_plan_select").html(e+"<br>"+data);
+		$("#sltPlan").html(e+"<br>"+data);
 	}
 }
 
@@ -79,7 +86,8 @@ function getExpensesByPlanId(planId){
 		for(i=0;i<es.length;i++){
 			var id = es[i].id;
 			var amount = es[i].amount;
-			var dateTime = es[i].dateTime;
+			var date = es[i].date;
+			var time = es[i].time;
 			var categoryName = es[i].categoryName;
 			var remark = es[i].remark;
 			content += "<div class='panel panel-default'>";
@@ -88,7 +96,7 @@ function getExpensesByPlanId(planId){
 			content += 			"<span class='log_expense_amount'>"+amount+"</span>";
 			content += 		"</div>";
 			content += 		"<div class='panel-body align-left'>";
-			content += 			"<h5 class='log_expense_dateTime'>"+dateTime+"</h5>";
+			content += 			"<h5 class='log_expense_dateTime'>"+ time + " "+ date +"</h5>";
 			content += 			"<span class='log_expense_remark'>"+remark+"</span>";
 			content += 		"</div>";
 			content += "</div>";
@@ -134,4 +142,41 @@ function categorySelectBoxGenerate(){
 	catch(e){
 		$("#new_expanse_category_select").html(e+"<br>"+data);
 	}
+}
+
+function getGraphDataByPlanId(planId){
+
+	var date = new Array();
+	var amount = new Array();
+	var data = Android.getGraphDataByPlanId(planId);
+
+	var graph = JSON.parse(data);	
+	for(i=0;i<graph.length;i++){
+		date[i] = graph[i].date;
+		amount[i] = graph[i].amount;
+	}
+
+	var ctx = document.getElementById('chart').getContext('2d');
+	var iChart = new Chart(ctx,{
+		type : 'bar',
+		data : {
+			  labels : date,
+			datasets : [{
+			   label : 'Daily',
+				data : amount
+			}],
+		},
+		options: {
+	        legend: {
+	            display : false
+	        },
+	        scales: {
+		        yAxes: [{
+		            ticks: {
+		                beginAtZero: true
+		            }
+		        }]
+		    }
+	    }
+	});
 }
