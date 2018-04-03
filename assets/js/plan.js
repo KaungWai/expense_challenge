@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	try{
+	
 	$("#btnPlusPlan").click(function(){
 		$(this).hide();
 		$("#overlay").show();
@@ -19,13 +19,6 @@ $(document).ready(function(){
 		getOlderPlans();
 		planSelectBoxGenerate();
 	});
-	
-	getCurrentPlan();
-	getOlderPlans();
-	}
-	catch(e){
-		alert("Plan.js Error:"+e);
-	}
 });
 
 function getCurrentPlan(){
@@ -118,4 +111,14 @@ function addPlan(){
 	var planEndDate = $("#new_plan_end_date").val();
 	var planAmount = parseInt($("#new_plan_amount").val());
 	Android.addPlan(planName,planStartDate,planEndDate,planAmount);
+}
+
+function refreshPlan(){
+	try{
+		getCurrentPlan();
+		getOlderPlans();
+	}
+	catch(e){
+		alert("Plan.js Error:"+e);
+	}
 }

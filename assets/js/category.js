@@ -115,3 +115,7 @@ function deleteCategory(id){
 function updateCategory(id,name){
 	Android.updateCategory(id,name);
 }
+
+function refreshCategory(){
+	getAllCategories();
+}

@@ -366,6 +366,17 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 			// return expenses
 			return expenses;
 		}
+
+		public Float getExpenseAmountTotalByPlanId(int planId){
+			String query = "SELECT SUM(amount) AS amount FROM ExpenseDB WHERE planId = " + planId ;
+			SQLiteDatabase db = this.getWritableDatabase();
+			Cursor cursor = db.rawQuery(query, null);
+			Float retAmount = 0F;
+			if (cursor.moveToFirst()) {
+				retAmount = cursor.getFloat(0);
+			}
+			return retAmount;
+		}
 		
 		public List<GraphData> getGraphDataByPlanId(int planId){
 			

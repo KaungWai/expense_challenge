@@ -11,12 +11,6 @@ $(document).ready(function(){
 	$("#pd-btn").css({
 		"height":naviBarHeight+"px"
 	});
-
-	try{
-		getAllCategories();
-	}
-	catch(e){
-		alert("init.js Error:"+e);
-	}
 	
+	refreshHome();
 });

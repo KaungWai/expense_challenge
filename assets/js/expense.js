@@ -12,7 +12,7 @@ $(document).ready(function(){
 		$("#overlay").hide();
 		$("#expense_input_box").hide();
 		$("#btnExpansePlus").show();
-		getExpensesByPlanId(Android.checkCurrentPlan());
+		refreshHome();
 	});
 
 	$("#btn_new_expense_cancel").click(function(){
@@ -20,17 +20,6 @@ $(document).ready(function(){
 		$("#expense_input_box").hide();
 		$("#btnExpansePlus").show();
 	});
-
-	try{
-		categorySelectBoxGenerate();
-		planSelectBoxGenerate();
-		var planId = Android.checkCurrentPlan();
-		getExpensesByPlanId(planId);
-		getGraphDataByPlanId(planId);
-	}
-	catch(e){
-		alert("expense.js "+e);
-	}
 });
 
 function addExpense(){
@@ -49,10 +38,12 @@ function planSelectBoxGenerate(){
 	var content = "";
 	var data;
 	var ps;
+	var planCnt = 0;
 	try{
 
 		data = Android.getCurrentPlan();
-		ps = JSON.parse(data);
+		ps = JSON.parse(data); 
+			planCnt += ps.length;
 		for(i=0;i<ps.length;i++){
 			var id = ps[i].id;
 			var name = ps[i].name;
@@ -61,14 +52,22 @@ function planSelectBoxGenerate(){
 
 		data = Android.getOlderPlans();
 		ps = JSON.parse(data);
+			planCnt += ps.length;
 		for(i=0;i<ps.length;i++){
 			var id = ps[i].id;
 			var name = ps[i].name;
 			content += "<option value='"+id+"'>"+name+"</option>";
 		}
 
-		$("#view_log_plan_select").html(content);
-		$("#sltPlan").html(content);
+		if(planCnt==0){
+			$("#view_log_plan_select").hide();
+		}
+		else{
+			$("#view_log_plan_select").show();
+			$("#view_log_plan_select").html(content);
+			$("#sltPlan").html(content);
+		}
+		
 	}
 	catch(e){
 		$("#view_log_plan_select").html(e+"<br>"+data);
@@ -96,7 +95,7 @@ function getExpensesByPlanId(planId){
 			content += 			"<span class='log_expense_amount'>"+amount+"</span>";
 			content += 		"</div>";
 			content += 		"<div class='panel-body align-left'>";
-			content += 			"<h5 class='log_expense_dateTime'>"+ time + " "+ date +"</h5>";
+			content += 			"<h5 class='log_expense_dateTime'>"+ date +"</h5>";
 			content += 			"<span class='log_expense_remark'>"+remark+"</span>";
 			content += 		"</div>";
 			content += "</div>";
@@ -120,7 +119,7 @@ function setDateTime(){
     if(dd.length == 1) dd = "0"+dd;
     if(hr.length == 1) hr = "0"+hr;
     if(mi.length == 1) mi = "0"+mi;
-    var dt = yyyy+"-"+mm+"-"+dd+"T"+hr+":"+mi;	
+    var dt = yyyy+"-"+mm+"-"+dd+"T"+hr+":"+mi;
 	$("#new_expense_date_time").val(dt);
 }
 
@@ -179,4 +178,69 @@ function getGraphDataByPlanId(planId){
 		    }
 	    }
 	});
+}
+
+function homeCurrentPlan(){
+	var content = "";
+	var data = Android.getCurrentPlan();
+	try{ 
+		var ps = JSON.parse(data);
+		if(ps.length>0){
+			for(i=0;i<ps.length;i++){
+				var planId = ps[i].id;
+				var name = ps[i].name;
+				var startDate = ps[i].startDate;
+				var endDate = ps[i].endDate;
+				var planAmount = ps[i].amount;
+				var usedAmount = parseFloat(Android.getExpenseAmountTotalByPlanId(planId));
+				var usedPercent =  parseInt(usedAmount*100 / planAmount);
+
+				content += "<div class='panel panel-default'>";
+				content += "<div class='panel-heading'>"+name+"</div>";
+				content += "<div class='panel-body'>";
+				content += "<span class='plan_start_date'>"+startDate+"</span>";
+				content += "<span class='plan_amount'>"+planAmount+"</span>";
+				content += "<span class='plan_end_date'>"+endDate+"</span>";
+				content += "<br>";
+				content += "<div class='progress'>";
+				content += "<div class='progress-bar progress-bar-info' role='progressbar' aria-valuenow='70' aria-valuemin='0' aria-valuemax='100' style='width:"+usedPercent+"%'>";
+				content += usedPercent+"%";
+				content += "</div>";
+				content += "</div>";
+				content += usedAmount+" Used";
+				content += "</div>"
+				content += "</div>";
+			}
+			$("#homeCurrentPlanGenerator").html(content);
+		}
+		else{
+			$("#homeCurrentPlanGenerator").html("<h3 style='text-align:center;color:#ccc;'>NO CURRENT PLAN</h3>");
+		}
+	}
+	catch(e){
+		$("#homeCurrentPlanGenerator").html(e+"<br>"+data);
+	}
+}
+
+function refreshHome(){
+	try{
+		categorySelectBoxGenerate();
+		planSelectBoxGenerate();
+		var planId = Android.checkCurrentPlan();
+		homeCurrentPlan();
+		getGraphDataByPlanId(planId);
+	}
+	catch(e){
+		alert("expense.js "+e);
+	}
+}
+
+function refreshExpenseLog(){
+	try{
+		var planId = Android.checkCurrentPlan();
+		getExpensesByPlanId(planId);
+	}
+	catch(e){
+		alert("expense.js "+e);
+	}
 }

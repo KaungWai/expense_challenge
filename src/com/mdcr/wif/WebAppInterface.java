@@ -195,6 +195,13 @@ public class WebAppInterface {
 			return e.toString();
 		}
 	}
+
+	@JavascriptInterface
+	public String getExpenseAmountTotalByPlanId(String planId){
+		SQLiteHelper db = new SQLiteHelper(mContext);
+		Float amount = db.getExpenseAmountTotalByPlanId(Integer.valueOf(planId));
+		return String.valueOf(amount);
+	}
 	
 	@JavascriptInterface
 	public String getGraphDataByPlanId(String planId) throws Exception{
