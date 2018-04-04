@@ -20,9 +20,8 @@ $(document).ready(function(){
 			addCategory(name);
 		if($(this).html()=="Update")
 			updateCategory(selected_cat_id,name);
-
-		getAllCategories(); // refresh cat
-		categorySelectBoxGenerate();
+		
+		refreshCategory();
 	});
 
 	$("#btnCancelCategoryName").click(function(){
@@ -41,7 +40,7 @@ $(document).ready(function(){
 
 	$("#btnDeleteCategoryName").click(function(){
 		$("#category-option-box").hide();
-		$("#confirm-notice").html("<strong>"+selected_cat_name+"</strong> will be deleted and expanse logs under this category will be moved to Misc.");
+		$("#confirm-notice").html("<strong>"+selected_cat_name+"</strong> will be deleted and expanse logs under this category will be moved to <strong>Misc</strong>.");
 		$("#category-confirm-box").fadeIn(200);
 	});
 
@@ -56,22 +55,13 @@ $(document).ready(function(){
 		$("#category-confirm-box").hide();
 		$("#plusCategory").show();
 		deleteCategory(selected_cat_id);
-		getAllCategories(); // refresh cats
+		refreshCategory(); // refresh cats
 	});
 
 	$("#btnNoCategoryName").click(function(){
 		$("#overlay").hide();
 		$("#category-confirm-box").hide();
 		$("#plusCategory").show();
-	});
-
-	// testing codes
-	$(".cat_item").click(function(){
-		selected_cat_id = $(this).attr("cat_id");
-		selected_cat_name = $(this).attr("cat_name");
-		$("#plusCategory").hide();
-		$("#overlay").show();
-		$("#category-option-box").show();
 	});
 });
 
@@ -90,12 +80,15 @@ function getAllCategories(){
 			var name = cats[i].name;
 
 			content += "<div class='cat'>";
-			content += "<span class='glyphicon glyphicon-option-vertical cat_item' cat_id="+id+" cat_name='"+name+"'></span>" + name
+			if(i==0)
+				content += "<span class='glyphicon glyphicon-option-vertical cat_item' cat_id="+id+" cat_name='"+name+"'></span>" + name
+			else
+				content += "<span class='glyphicon glyphicon-option-vertical cat_item cat_items' cat_id="+id+" cat_name='"+name+"'></span>" + name
 			content += "</div>";
 		}
-			$("#categoryAutoGenWrapperTag").html(content);
+		$("#categoryAutoGenWrapperTag").html(content);
 
-		$(".cat_item").click(function(){
+		$(".cat_items").click(function(){
 			selected_cat_id = $(this).attr("cat_id");
 			selected_cat_name = $(this).attr("cat_name");
 			$("#plusCategory").hide();
@@ -108,6 +101,39 @@ function getAllCategories(){
 	}
 }
 
+function getDoughnutDataByPlanId(planId){
+
+	var name = new Array();
+	var amount = new Array();
+	var color = new Array();
+	var data = Android.getDoughnutDataByPlanId(planId);
+	var graph = JSON.parse(data);
+	if (graph.length==0){
+		$("#doughnut").hide();
+	}
+	else{
+		$("#doughnut").show();
+	}
+
+	for(i=0;i<graph.length;i++){
+		name[i] = graph[i].name;
+		amount[i] = graph[i].amount;
+		color[i] = getRandomColor();
+	}
+
+	var ctx = document.getElementById('doughnut').getContext('2d');
+	var iChart = new Chart(ctx,{
+		type : 'doughnut',
+		data : {
+			  labels : name,
+			datasets : [{
+				data : amount,
+				backgroundColor : color
+			}],
+		},
+	});
+}
+
 function deleteCategory(id){
 	Android.deleteCategory(id);
 }
@@ -116,6 +142,22 @@ function updateCategory(id,name){
 	Android.updateCategory(id,name);
 }
 
+function getRandomColor(){
+	var r = Math.floor(Math.random()*(255-1+1)+1);
+	var g = Math.floor(Math.random()*(255-1+1)+1);
+	var b = Math.floor(Math.random()*(255-1+1)+1);
+	var a = 0.6;
+	return "rgba("+r+","+g+","+b+","+a+")";
+}
+
 function refreshCategory(){
-	getAllCategories();
+	try{
+		getAllCategories();
+		var planId = Android.checkCurrentPlan();
+		getDoughnutDataByPlanId(planId);
+	}
+	catch(e){
+		alert(e);
+	}
+
 }

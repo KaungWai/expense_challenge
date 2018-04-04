@@ -13,4 +13,10 @@ $(document).ready(function(){
 	});
 	
 	refreshHome();
+
+	var isFirstTime = localStorage.getItem("isFirstTime");
+	if(isFirstTime != "yes"){
+		Android.createMiscCategory();
+	}
+	localStorage.setItem("isFirstTime","yes");
 });

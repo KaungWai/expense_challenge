@@ -30,6 +30,12 @@ public class WebAppInterface {
 	}
 	
 	@JavascriptInterface
+	public void createMiscCategory(){
+		SQLiteHelper db = new SQLiteHelper(mContext);
+		db.createMiscCategory();
+	}
+	
+	@JavascriptInterface
 	public String getAllCategories(){
 		String ret = "[";
 		try{
@@ -71,6 +77,34 @@ public class WebAppInterface {
 		cat.setId(Integer.valueOf(categoryId));
 		cat.setName(categoryNewName);
 		db.updateCategory(cat);
+	}
+	
+	@JavascriptInterface
+	public String getDoughnutDataByPlanId(String planId){
+		String ret = "[";
+		try{
+			SQLiteHelper db = new SQLiteHelper(mContext);
+			List<DoughnutData> dds = db.getDoughnutDataByPlanId(Integer.valueOf(planId));
+			int i = 1;
+			for (DoughnutData dd : dds) {
+				JSONObject ddObject = new JSONObject();
+				ddObject.put("id", dd.getCategoryId());
+				ddObject.put("name", dd.getCategoryName());
+				ddObject.put("amount", dd.getTotalUsedAmount());
+				
+				ret += ddObject.toString();
+				if(i<dds.size()){
+					ret += ",";
+				}
+				
+				i++;
+			}
+			ret += "]";
+			return ret;
+		}
+		catch(Exception e){
+			return e.toString();
+		}
 	}
 //----------------------------------------------------------------------------------------------------------//
 	@JavascriptInterface
@@ -125,6 +159,7 @@ public class WebAppInterface {
 				JSONObject pObject = new JSONObject();
 				pObject.put("id", String.valueOf(p.getId()));
 				pObject.put("name", p.getName());
+				pObject.put("amount", p.getAmount());
 				pObject.put("startDate",p.getStartDate());
 				pObject.put("endDate",p.getEndDate());
 				pObject.put("status", p.getStatus());

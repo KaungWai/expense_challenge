@@ -8,11 +8,24 @@ $(document).ready(function(){
 	});
 
 	$("#btn_new_expense_add").click(function(){
-		addExpense();
-		$("#overlay").hide();
-		$("#expense_input_box").hide();
-		$("#btnExpansePlus").show();
+		var failOrKeep = addExpense();
+		if(failOrKeep == "fail"){
+			$("#expense_input_box").hide();
+			$("#failBox").show();
+		}
+		else{
+			$("#expense_input_box").hide();
+			$("#overlay").hide();
+			$("#btnExpansePlus").show();
+		}
+		
 		refreshHome();
+	});
+	
+	$("#okIfail").click(function(){
+		$("#failBox").hide();
+		$("#overlay").hide();
+		$("#btnExpansePlus").show();
 	});
 
 	$("#btn_new_expense_cancel").click(function(){
@@ -29,9 +42,7 @@ function addExpense(){
 	var time = dateTime.substring(11, 16);
 	var categoryId = $("#new_expanse_category_select").val();
 	var remark = $("#new_expense_remark").val();
-	Android.addExpense(amount, date, time, categoryId, remark);
-	var planId = Android.checkCurrentPlan();
-	getGraphDataByPlanId(planId);
+	return Android.addExpense(amount, date, time, categoryId, remark);
 }
 
 function planSelectBoxGenerate(){
@@ -61,9 +72,11 @@ function planSelectBoxGenerate(){
 
 		if(planCnt==0){
 			$("#view_log_plan_select").hide();
+			$("#sltPlan").hide();
 		}
 		else{
 			$("#view_log_plan_select").show();
+			$("#sltPlan").show();
 			$("#view_log_plan_select").html(content);
 			$("#sltPlan").html(content);
 		}
@@ -82,7 +95,8 @@ function getExpensesByPlanId(planId){
 	try{
 		data = Android.getExpensesByPlanId(planId);
 		es = JSON.parse(data);
-		for(i=0;i<es.length;i++){
+		if(es.length>0){
+			for(i=0;i<es.length;i++){
 			var id = es[i].id;
 			var amount = es[i].amount;
 			var date = es[i].date;
@@ -100,8 +114,13 @@ function getExpensesByPlanId(planId){
 			content += 		"</div>";
 			content += "</div>";
 
+			}
+			$("#logAutoGeneratorTag").html(content);
 		}
-		$("#logAutoGeneratorTag").html(content);
+		else{
+			$("#logAutoGeneratorTag").html("<h3 style='text-align:center;color:#ccc;'>NO EXPENSE LOGS</h3>");
+		}
+		
 	}
 	catch(e){
 		$("#logAutoGeneratorTag").html(e+"<br>"+data);

@@ -59,20 +59,29 @@
 			<input type="datetime-local" min="2018-03-27" id="new_expense_date_time"/>
 			<br>
 			<select id="new_expanse_category_select">
-				<option>a</option>
-				<option value="1">A</option>
-				<option value="2">B</option>
-				<option value="3">C</option>
-				<option value="4">D</option>
+
 			</select>
 			<textarea id="new_expense_remark" rows="1" class="keyboard_input" placeholder="Remark"></textarea>
 			<br>
 			<button class="btnControls" id="btn_new_expense_add">Add</button> <button class="btnControls" id="btn_new_expense_cancel">Cancel</button>
 		</div>
+
+		<div id="failBox">
+			<span class="box_title">Oops!</span>
+			<img src="image/sadFace.png" width="50px;">
+			<br>
+			You have failed your current challenge.
+			<button id="okIfail">OK</button>
+		</div>
 	</div><!-- home -->
 
 	<div id="category-con"><!-- category -->
 		<div class="col-xs-12 col-sm-12 col-md-12 categoryContainer general">
+
+		<canvas id="doughnut"></canvas>
+
+		<br>
+
 		<span id="categoryAutoGenWrapperTag">
 			<!-- generated categories appear in here -->
 			<div class="cat">

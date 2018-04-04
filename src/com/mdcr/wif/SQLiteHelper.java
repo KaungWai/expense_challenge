@@ -33,7 +33,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 		String CREATE_PLAN_TABLE = "CREATE TABLE PlanDB (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, startDate TEXT, endDate TEXT, amount INTEGER, status INTEGER)";
 		// Expense Table
 		String CREATE_EXPENSE_TABLE = "CREATE TABLE ExpenseDB (id INTEGER PRIMARY KEY AUTOINCREMENT, categoryId INTEGER, planId INTEGER, date TEXT, time TEXT, amount REAL, remark TEXT, FOREIGN KEY (categoryId) REFERENCES CategoryDB (id) , FOREIGN KEY (PlanId) REFERENCES PlanDB(id))";
-
+		
 		// create Category table
 		db.execSQL(CREATE_CATEGORY_TABLE);
 		// create Plan Table
@@ -59,13 +59,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 	 * CRUD operations (create "add", read "get", update, delete) category + get
 	 * all categories + delete all categories
 	 */
-	// -----------------------------------------------------------------------//
+//----------------------------------------------------------------------------------------------------------//
 	// Category table name
 	private static final String TABLE_CATEGORIES = "CategoryDB";
 	// Category Columns names
 	private static final String KEY_CATEGORY_ID = "id";
 	private static final String KEY_CATEGORY_NAME = "name";
-	// -----------------------------------------------------------------------//
+//----------------------------------------------------------------------------------------------------------//
 	// Plan table name
 	private static final String TABLE_PLANS = "PlanDB";
 	// Plan Columns names
@@ -87,6 +87,14 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 	private static final String KEY_EXPENSE_AMOUNT = "amount";
 	private static final String KEY_EXPENSE_REMARK = "remark";
 	// -----------------------------------------------------------------------//
+	public void createMiscCategory(){
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(KEY_CATEGORY_NAME, "Misc");
+		db.insert(TABLE_CATEGORIES, null,values);
+		db.close();
+	}
+	
 	public void addCategory(Category category) {
 		Log.d("addCategory", category.toString());
 		// 1. get reference to writable DB
@@ -164,8 +172,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
 		// 1. get reference to writable DB
 		SQLiteDatabase db = this.getWritableDatabase();
-
-		// 2. delete
+		
+		// 2.1 move expense log to misc
+		String updateQuery = "UPDATE ExpenseDB SET " + KEY_EXPENSE_CATEGORYID + " = 1 WHERE " + KEY_EXPENSE_CATEGORYID + " = "+category.getId();
+		db.execSQL(updateQuery);
+		
+		// 2.2 delete
 		db.delete(TABLE_CATEGORIES, KEY_CATEGORY_ID + " = ?",
 				new String[] { String.valueOf(category.getId()) });
 
@@ -175,7 +187,32 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 		Log.d("deleteCategory", category.toString());
 
 	}
-	//------------------------------------------------------------------//
+	public List<DoughnutData> getDoughnutDataByPlanId(int planId){
+		
+		List<DoughnutData> doughnutDataList = new LinkedList<DoughnutData>();
+		
+		// 1. Build the query
+		String query = "SELECT E.categoryId, C.name, SUM(E.amount) FROM " + TABLE_EXPENSE + " E LEFT OUTER JOIN " + TABLE_CATEGORIES + " C ON E.categoryId = C.id WHERE E.planId = " + planId + " GROUP BY E.categoryId";
+		
+		// 2. get reference to writable DB
+		SQLiteDatabase db = this.getWritableDatabase();
+		Cursor cursor = db.rawQuery(query, null);
+		
+		// 3. go over each row, build doughnutData and add it to list
+		DoughnutData doughnutData = null;
+		if (cursor.moveToFirst()) {
+			do {
+				doughnutData = new DoughnutData();
+				doughnutData.setCategoryId(cursor.getInt(0));
+				doughnutData.setCategoryName(cursor.getString(1));
+				doughnutData.setTotalUsedAmount(cursor.getFloat(2));
+				doughnutDataList.add(doughnutData);
+			} while (cursor.moveToNext());
+		}
+		return doughnutDataList;
+	}
+//----------------------------------------------------------------------------------------------------------//
+
 	public String addPlan(Plan plan) {
 		// 1. get reference to writable DB
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -229,10 +266,21 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
 		Log.d("getAllPlans()", plans.toString());
 
-		// return categories
+		// return plans
 		return plans;
 	}
 
+	public float getAmountOfCurrentPlan(){
+		float ret = 0.0f;
+		String query = "SELECT " + KEY_PLAN_AMOUNT + " FROM " + TABLE_PLANS + " WHERE status = 0";
+		SQLiteDatabase db = this.getWritableDatabase();
+		Cursor cursor = db.rawQuery(query, null);
+		if(cursor.moveToFirst()){
+			ret = cursor.getFloat(0);
+		}
+		return ret;
+	}
+	
 	// Get Older Plans
 	public List<Plan> getOlderPlans() {
 		List<Plan> plans = new LinkedList<Plan>();
@@ -306,6 +354,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 	//---------------------------------------------------------------------//
 	// add expenses
 	public String addExpense(Expense expense) {
+		String ret = "";
 		try{
 			// 1. get reference to writable DB
 			SQLiteDatabase db = this.getWritableDatabase();
@@ -322,9 +371,18 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 			// 3. insert
 			db.insert(TABLE_EXPENSE, null, values);
 
+			Float totalUsedAmount = getExpenseAmountTotalByPlanId(checkCurrentPlan());
+			Float planedAmount = getAmountOfCurrentPlan();
+			if(totalUsedAmount>planedAmount){
+				ret = "fail";
+				db.execSQL("UPDATE " + TABLE_PLANS + " SET " + KEY_PLAN_STATUS + " = 2 WHERE " + KEY_PLAN_STATUS + " = 0");
+			}
+			else{
+				ret = "keep";
+			}
 			// 4. close
 			db.close();
-			return expense.toString();
+			return ret;
 		}
 		catch(Exception e){
 			StringWriter errors = new StringWriter();
