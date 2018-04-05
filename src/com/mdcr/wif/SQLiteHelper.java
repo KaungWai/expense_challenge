@@ -286,7 +286,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 		List<Plan> plans = new LinkedList<Plan>();
 
 		// 1. build the query
-		String query = "SELECT  * FROM " + TABLE_PLANS + " WHERE status != '0'";
+		String query = "SELECT  * FROM " + TABLE_PLANS + " WHERE status != '0' ORDER BY " + KEY_PLAN_ID + " DESC";
 
 		// 2. get reference to writable DB
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -396,7 +396,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 			List<Expense> expenses = new LinkedList<Expense>();
 
 			// 1. build the query
-			String query = "SELECT E.id, E.planId, E.categoryId, C.name, E.date, E.time, E.amount, E.remark FROM " + TABLE_EXPENSE + " E LEFT OUTER JOIN " + TABLE_CATEGORIES + " C ON E.categoryId = C.id WHERE E.planId = " + planId;
+			String query = "SELECT E.id, E.planId, E.categoryId, C.name, E.date, E.time, E.amount, E.remark FROM " + TABLE_EXPENSE + " E LEFT OUTER JOIN " + TABLE_CATEGORIES + " C ON E.categoryId = C.id WHERE E.planId = " + planId + " ORDER BY E.date DESC";
 
 			// 2. get reference to writable DB
 			SQLiteDatabase db = this.getWritableDatabase();

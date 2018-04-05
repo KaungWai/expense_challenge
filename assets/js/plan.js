@@ -36,7 +36,7 @@ function getCurrentPlan(){
 				var usedAmount = parseFloat(Android.getExpenseAmountTotalByPlanId(id));
 				var usedPercent =  parseInt(usedAmount*100 / planAmount);
 
-				content += "<div class='panel panel-default'>";
+				content += "<div class='panel panel-info'>";
 				content += "<div class='panel-heading'>"+name+"</div>";
 				content += "<div class='panel-body'>";
 				content += "<span class='plan_start_date'>"+startDate+"</span>";
@@ -89,7 +89,7 @@ function getOlderPlans(){
 					status = "Failed (Aborted)";
 				}
 
-				content += "<div class='panel panel-default'>";
+				content += "<div class='panel panel-info'>";
 				content += "<div class='panel-heading'>"+name+"</div>";
 				content += "<div class='panel-body'>";
 				content += "<span class='plan_start_date'>"+startDate+"</span>";

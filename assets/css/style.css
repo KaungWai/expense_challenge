@@ -401,4 +401,10 @@
 .align-left{
 	text-align: left;
 }
+.progress-bar-info{
+	background-color: #c8dce6;
+	text-align: left;
+	text-indent: 3px;
+	color: #000;
+}
 /* bootstrap override */

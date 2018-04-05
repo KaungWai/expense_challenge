@@ -1,3 +1,5 @@
+
+
 $(document).ready(function(){
 
 	$("#btnExpansePlus").click(function(){
@@ -33,6 +35,8 @@ $(document).ready(function(){
 		$("#expense_input_box").hide();
 		$("#btnExpansePlus").show();
 	});
+
+	
 });
 
 function addExpense(){
@@ -103,7 +107,7 @@ function getExpensesByPlanId(planId){
 			var time = es[i].time;
 			var categoryName = es[i].categoryName;
 			var remark = es[i].remark;
-			content += "<div class='panel panel-default'>";
+			content += "<div class='panel panel-info'>";
 			content += 		"<div class='panel-heading'>";
 			content += 			"<span class='log_category_name'>"+categoryName+"</span>";
 			content += 			"<span class='log_expense_amount'>"+amount+"</span>";
@@ -164,39 +168,29 @@ function categorySelectBoxGenerate(){
 
 function getGraphDataByPlanId(planId){
 
-	var date = new Array();
-	var amount = new Array();
 	var data = Android.getGraphDataByPlanId(planId);
+	var graph = JSON.parse(data);
+    
+    // remove labels
+    iChart.data.labels.length = 0;
 
-	var graph = JSON.parse(data);	
-	for(i=0;i<graph.length;i++){
-		date[i] = graph[i].date;
-		amount[i] = graph[i].amount;
-	}
+    // remove datesets
+    iChart.data.datasets.splice(0, 1);
 
-	var ctx = document.getElementById('chart').getContext('2d');
-	var iChart = new Chart(ctx,{
-		type : 'bar',
-		data : {
-			  labels : date,
-			datasets : [{
-			   label : 'Daily',
-				data : amount
-			}],
-		},
-		options: {
-	        legend: {
-	            display : false
-	        },
-	        scales: {
-		        yAxes: [{
-		            ticks: {
-		                beginAtZero: true
-		            }
-		        }]
-		    }
-	    }
-	});
+	// declare new dataset
+	var newDataset = {
+		label: 'Usage',
+		backgroundColor: "rgba(91, 192, 222, 0.5)",
+		data: []
+	};
+
+    for(i=0;i<graph.length;i++){
+    	iChart.data.labels.push(graph[i].date);
+        newDataset.data.push(graph[i].amount);
+    }
+
+    iChart.data.datasets.push(newDataset);
+    window.iChart.update();
 }
 
 function homeCurrentPlan(){
@@ -214,7 +208,7 @@ function homeCurrentPlan(){
 				var usedAmount = parseFloat(Android.getExpenseAmountTotalByPlanId(planId));
 				var usedPercent =  parseInt(usedAmount*100 / planAmount);
 
-				content += "<div class='panel panel-default'>";
+				content += "<div class='panel panel-info'>";
 				content += "<div class='panel-heading'>"+name+"</div>";
 				content += "<div class='panel-body'>";
 				content += "<span class='plan_start_date'>"+startDate+"</span>";
@@ -245,9 +239,14 @@ function refreshHome(){
 	try{
 		categorySelectBoxGenerate();
 		planSelectBoxGenerate();
-		var planId = Android.checkCurrentPlan();
 		homeCurrentPlan();
-		getGraphDataByPlanId(planId);
+		var planId = $("#sltPlan").val();
+		if(planId>0){
+			getGraphDataByPlanId(planId);
+		}
+		else{
+			getGraphDataByPlanId(0);
+		}
 	}
 	catch(e){
 		alert("expense.js "+e);
@@ -256,8 +255,13 @@ function refreshHome(){
 
 function refreshExpenseLog(){
 	try{
-		var planId = Android.checkCurrentPlan();
-		getExpensesByPlanId(planId);
+		var planId = $("#view_log_plan_select").val();
+		if(planId>0){
+			getExpensesByPlanId(planId);
+		}
+		else{
+			getExpensesByPlanId(0);
+		}
 	}
 	catch(e){
 		alert("expense.js "+e);
