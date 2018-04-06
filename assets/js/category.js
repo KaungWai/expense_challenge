@@ -121,17 +121,22 @@ function getDoughnutDataByPlanId(planId){
 		color[i] = getRandomColor();
 	}
 
-	var ctx = document.getElementById('doughnut').getContext('2d');
-	var iChart = new Chart(ctx,{
-		type : 'doughnut',
-		data : {
-			  labels : name,
-			datasets : [{
-				data : amount,
-				backgroundColor : color
-			}],
-		},
-	});
+
+	 // remove labels
+    iDouhnut.data.labels.length = 0;
+    // remove datesets
+    iDouhnut.data.datasets.splice(0, 1);
+    // add new labels
+    iDouhnut.data.labels = name;
+	// create new dataset
+	var newDataset = {
+		backgroundColor: color,
+		data: amount
+	};
+	// add dataset
+    iDouhnut.data.datasets.push(newDataset);
+    // refresh 
+    window.iDouhnut.update();
 }
 
 function deleteCategory(id){
@@ -153,8 +158,14 @@ function getRandomColor(){
 function refreshCategory(){
 	try{
 		getAllCategories();
-		var planId = Android.checkCurrentPlan();
-		getDoughnutDataByPlanId(planId);
+		var planId = $("#category_plan_select_box").val();
+		if(planId>0){
+			getDoughnutDataByPlanId(planId);
+		}
+		else{
+			getDoughnutDataByPlanId(0);
+		}
+		
 	}
 	catch(e){
 		alert(e);

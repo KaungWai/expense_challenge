@@ -1,5 +1,6 @@
 package com.mdcr.myexpansechallenge;
 
+import com.mdcr.expensechallenge.R;
 import com.mdcr.wif.WebAppInterface;
 
 import android.support.v7.app.ActionBarActivity;

@@ -80,8 +80,8 @@ public class Expense {
 		 return time;
 	 }
 	 
-	 public String setTime(String time) {
-		 return time;
+	 public void setTime(String time) {
+		 this.time = time;
 	 }
 	 
 	 public float getAmount() {

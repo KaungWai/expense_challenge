@@ -3,6 +3,7 @@
 <head>
 	<title></title>
 	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<script type="text/javascript" src="jquery/jquery.js"></script>
@@ -10,46 +11,8 @@
 </head>
 
 <body>
-<canvas id="chart"></canvas>
+        <select id="sltPlan" class="planSelectBoxStyle" onchange="getGraphDataByPlanId(this.value);">
+
+        </select>
 </body>
-<script type="text/javascript">
-var ctx = document.getElementById('chart').getContext('2d');
-var iChart = new Chart(ctx,{
-    type : 'bar',
-    data : {
-          labels : [],
-        datasets : [{
-           label : 'Usage',
-            data : []
-        }],
-    },
-    options: {
-        legend: {
-            display : false
-        },
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
-        }
-    }
-});
-
-    var data = '[{"date":"2018-03-03","amount":2000},{"date":"2018-03-04","amount":2500}]';
-    var graph = JSON.parse(data);
-    iChart.data.labels.pop();
-
-    iChart.data.datasets.forEach((dataset) => {
-        dataset.data.pop();
-    });
-    
-    iChart.update();    
-    for(i=0;i<graph.length;i++){
-        iChart.data.labels.push(graph[i].date);
-        iChart.data.datasets[0].data.push(graph[i].amount);
-    }
-    iChart.update();
-</script>
 </html>

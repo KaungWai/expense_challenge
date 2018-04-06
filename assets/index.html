@@ -31,7 +31,7 @@
 
 	<div id="home-con"><!-- home -->
 	<div class="col-xs-12 col-sm-12 col-md-12 general">
-		<select id="sltPlan" onchange="getGraphDataByPlanId(this.value);">
+		<select id="sltPlan" class="planSelectBoxStyle" onchange="getGraphDataByPlanId(this.value);">
 
 		</select>
 		<br><br>
@@ -51,7 +51,7 @@
 			<br>
 			<input type="datetime-local" min="2018-03-27" id="new_expense_date_time"/>
 			<br>
-			<select id="new_expanse_category_select">
+			<select id="new_expanse_category_select" class="btnControls" >
 
 			</select>
 			<textarea id="new_expense_remark" rows="1" class="keyboard_input" placeholder="Remark"></textarea>
@@ -62,8 +62,8 @@
 		<div id="failBox">
 			<span class="box_title">Oops!</span>
 			<img src="image/sadFace.png" width="50px;">
-			<br>
-			You have failed your current challenge.
+			<br><br>
+			You just failed your current challenge.
 			<br><br>
 			<button id="okIfail">OK</button>
 		</div>
@@ -71,11 +71,12 @@
 
 	<div id="category-con"><!-- category -->
 		<div class="col-xs-12 col-sm-12 col-md-12 categoryContainer general">
-
-		<canvas id="doughnut"></canvas>
-
+		<select id="category_plan_select_box" class="planSelectBoxStyle" onchange="getDoughnutDataByPlanId(this.value);">
+			
+		</select>
 		<br>
-
+		<canvas id="doughnut"></canvas>
+		<hr>
 		<span id="categoryAutoGenWrapperTag">
 			<!-- generated categories appear in here -->
 			<div class="cat">
@@ -122,23 +123,7 @@
 			<span id="olderPlanAutoGeneratorTag">
 				
 			</span>
-<!-- 		    
-			<div class="panel panel-default">
-		    	<div class="panel-heading">Plan Name 4</div>
-		      	<div class="panel-body">
-		      	<span class="plan_start_date">03/07/2018</span>
-				<span class="plan_amount">50000</span>
-				<span class="plan_end_date">03/08/2018</span>
-				<br>
-		      		<div class="progress">
-						<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%">
-						10%
-						</div>
-					</div>
-					Succeed
-		    	</div>
-		    </div> 
--->
+
 		</div>
 		<div class="plus" id="btnPlusPlan">
 			+<span class="glyphicon glyphicon-flag"></span>
@@ -159,7 +144,7 @@
 
 	<div id="log-con"><!-- log -->
 		<div class="col-xs-12 col-sm-12 col-md-12 general">
-			<select id="view_log_plan_select" class="btnControls" onchange="getExpensesByPlanId(this.value);">
+			<select id="view_log_plan_select" class="planSelectBoxStyle" onchange="getExpensesByPlanId(this.value);">
 
 			</select>
 			<br>
@@ -218,6 +203,18 @@
 		        }]
 		    }
 	    }
+	});
+
+	ctx2 = document.getElementById('doughnut').getContext('2d');
+	iDouhnut = new Chart(ctx2,{
+		type : 'doughnut',
+		data : {
+			  labels : [],
+			datasets : [{
+				data : [],
+				backgroundColor : []
+			}],
+		},
 	});
 	</script>
 	<script type="text/javascript" src="js/init.js"></script>

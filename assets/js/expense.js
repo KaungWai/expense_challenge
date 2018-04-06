@@ -46,6 +46,7 @@ function addExpense(){
 	var time = dateTime.substring(11, 16);
 	var categoryId = $("#new_expanse_category_select").val();
 	var remark = $("#new_expense_remark").val();
+	// return string to decide whether just failed or keep going
 	return Android.addExpense(amount, date, time, categoryId, remark);
 }
 
@@ -75,14 +76,22 @@ function planSelectBoxGenerate(){
 		}
 
 		if(planCnt==0){
-			$("#view_log_plan_select").hide();
+			// hide select boxes
 			$("#sltPlan").hide();
+			$("#category_plan_select_box").hide();
+			$("#view_log_plan_select").hide();
+			
 		}
 		else{
-			$("#view_log_plan_select").show();
+			// display select boxes
 			$("#sltPlan").show();
-			$("#view_log_plan_select").html(content);
+			$("#category_plan_select_box").show();
+			$("#view_log_plan_select").show();
+			
+			// put data into select boxes
 			$("#sltPlan").html(content);
+			$("#category_plan_select_box").html(content);
+			$("#view_log_plan_select").html(content);
 		}
 		
 	}
@@ -113,7 +122,7 @@ function getExpensesByPlanId(planId){
 			content += 			"<span class='log_expense_amount'>"+amount+"</span>";
 			content += 		"</div>";
 			content += 		"<div class='panel-body align-left'>";
-			content += 			"<h5 class='log_expense_dateTime'>"+ date +"</h5>";
+			content += 			"<h5 class='log_expense_dateTime'>" + time + "&nbsp;&nbsp;&nbsp;" + date +"</h5>";
 			content += 			"<span class='log_expense_remark'>"+remark+"</span>";
 			content += 		"</div>";
 			content += "</div>";

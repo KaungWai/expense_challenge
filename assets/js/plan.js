@@ -81,15 +81,16 @@ function getOlderPlans(){
 				var status = "";
 				if (statusCode==1){
 					status = "Success";
+					content += "<div class='panel panel-info'>";
 				}
 				else if(statusCode==2){
 					status = "Failed";
+					content += "<div class='panel panel-danger'>";
 				}
 				else if(statusCode==3){
 					status = "Failed (Aborted)";
+					content += "<div class='panel panel-danger'>";
 				}
-
-				content += "<div class='panel panel-info'>";
 				content += "<div class='panel-heading'>"+name+"</div>";
 				content += "<div class='panel-body'>";
 				content += "<span class='plan_start_date'>"+startDate+"</span>";

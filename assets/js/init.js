@@ -1,27 +1,4 @@
 /* for page preparing */
-	var ctx = document.getElementById('chart').getContext('2d');
-	var iChart = new Chart(ctx,{
-		type : 'bar',
-		data : {
-			  labels : [],
-			datasets : [{
-			   label : 'Usage',
-				data : []
-			}],
-		},
-		options: {
-	        legend: {
-	            display : false
-	        },
-	        scales: {
-		        yAxes: [{
-		            ticks: {
-		                beginAtZero: true
-		            }
-		        }]
-		    }
-	    }
-	});
 $(document).ready(function(){
 	var headBarHeight = $(".headBar").outerHeight();
 	console.log(headBarHeight);
