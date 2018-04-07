@@ -12,7 +12,7 @@ $(document).ready(function(){
 		"height":naviBarHeight+"px"
 	});
 	
-	
+	winPlan();
 	var isFirstTime = localStorage.getItem("isFirstTime");
 	if(isFirstTime != "yes"){
 		Android.createMiscCategory();
@@ -26,4 +26,26 @@ if (typeof String.prototype.trim != 'function') { // detect native implementatio
   		String.prototype.trim = function () {
     		return this.replace(/^\s+/, '').replace(/\s+$/, '');
   	};
+}
+
+function winPlan(){
+	if(Android.checkCurrentPlan() != "0"){
+	    var currentdate = new Date(); 
+	    var yyyy = currentdate.getFullYear();
+	    var mm = (currentdate.getMonth()+1)+"";
+	    var dd = currentdate.getDate()+"";
+	    if(mm.length == 1) mm = "0"+mm;
+	    if(dd.length == 1) dd = "0"+dd;
+	    dNow = new Date(yyyy+"-"+mm+"-"+dd).getTime();
+
+	    var data = Android.getCurrentPlan();
+	    var plan = JSON.parse(data);
+	    var endDate = plan[0].endDate;
+	    dPlanEnd = new Date(endDate).getTime();
+	    if(dNow>dPlanEnd){
+	        $("#overlay").show();
+	        $("#successBox").show();
+	        Android.winPlan();
+	    }   
+	}
 }

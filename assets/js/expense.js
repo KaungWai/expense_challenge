@@ -22,6 +22,12 @@ $(document).ready(function(){
 		$("#btnExpansePlus").show();
 	});
 
+	$("#okIWin").click(function(){
+		$("#successBox").hide();
+		$("#overlay").hide();
+		$("#btnExpansePlus").show();
+	});
+	
 	$("#btn_new_expense_cancel").click(function(){
 		$("#overlay").hide();
 		$("#expense_input_box").hide();

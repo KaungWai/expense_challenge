@@ -84,18 +84,17 @@ function getOlderPlans(){
 				var statusCode = ps[i].status;
 				var status = "";
 				if (statusCode==1){
-					status = "Success";
-					content += "<div class='panel panel-info'>";
+					status = "<span class='label label-success'>Won</span>";
+					
 				}
 				else if(statusCode==2){
-					status = "Failed";
-					content += "<div class='panel panel-danger'>";
+					status = "<span class='label label-danger'>Failed</span>";
 				}
 				else if(statusCode==3){
-					status = "Failed (Aborted)";
-					content += "<div class='panel panel-danger'>";
+					status = "<span class='label label-danger'>Aborted</span>";
 				}
-				content += "<div class='panel-heading'>"+name+"</div>";
+				content += "<div class='panel panel-info'>";
+				content += "<div class='panel-heading'>"+name+status+"</div>";
 				content += "<div class='panel-body'>";
 				content += "<span class='plan_start_date'>"+startDate+"</span>";
 				content += "<span class='plan_amount'>"+planAmount+"</span>";
@@ -106,7 +105,7 @@ function getOlderPlans(){
 				content += usedPercent+"%";
 				content += "</div>";
 				content += "</div>";
-				content += usedAmount+" Used, " +status;
+				content += usedAmount+" Used";
 				content += "</div>"
 				content += "</div>";
 			}

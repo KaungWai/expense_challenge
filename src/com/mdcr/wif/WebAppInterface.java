@@ -189,6 +189,12 @@ public class WebAppInterface {
 			return e.toString();
 		}
 	}
+	
+	@JavascriptInterface
+	public void winPlan(){
+		SQLiteHelper db = new SQLiteHelper(mContext);
+		db.winPlan();
+	}
 //----------------------------------------------------------------------------------------------------------//
 	@JavascriptInterface
 	public String addExpense(String amount, String date, String time, String categoryId, String remark){

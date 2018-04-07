@@ -391,6 +391,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 		}
 	}
 	
+	// when user won a plan
+	public void winPlan(){
+		SQLiteDatabase db = this.getWritableDatabase();
+		String query = "UPDATE " + TABLE_PLANS + " SET " + KEY_PLAN_STATUS + " = 1 WHERE " + KEY_PLAN_STATUS + " = 0";
+		db.execSQL(query);
+		db.close();
+	}
 	// Get expenses by Plan
 		public List<Expense> getExpensesByPlanId(int planId) {
 			List<Expense> expenses = new LinkedList<Expense>();

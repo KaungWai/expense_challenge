@@ -11,31 +11,28 @@
 </head>
 
 <body>
-<canvas id="chart" style="width: 800px;height: 400px;"></canvas>
+<span class='label label-danger'>Failed</span>
 </body>
 <script type="text/javascript">
-    ctx = document.getElementById('chart').getContext('2d');
-    iChart = new Chart(ctx,{
-        type : 'bar',
-        data : {
-              labels : [],
-            datasets : [{
-               label : 'Usage',
-                data : []
-            }],
-        },
-        options: {
-            legend: {
-                display : false
-            },
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
-        }
-    });
+if(Android.checkCurrentPlan() != "0"){
+    var currentdate = new Date(); 
+    var yyyy = currentdate.getFullYear();
+    var mm = (currentdate.getMonth()+1)+"";
+    var dd = currentdate.getDate()+"";
+    if(mm.length == 1) mm = "0"+mm;
+    if(dd.length == 1) dd = "0"+dd;
+    var d = ;
+    dNow = new Date(yyyy+"-"+mm+"-"+dd).getTime();
+
+    var data = Android.getCurrentPlan();
+    var plan = JSON.parse(data);
+    var endDate = plan[0].endDate;
+    dPlanEnd = new Date(endDate).getTime();
+    if(dNow>dPlanEnd){
+        $("#overlay").show();
+        $("#successBox").show();
+        Android.winPlan();
+    }   
+}
 </script>
 </html>
