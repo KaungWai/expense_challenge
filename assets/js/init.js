@@ -12,11 +12,18 @@ $(document).ready(function(){
 		"height":naviBarHeight+"px"
 	});
 	
-	refreshHome();
-
+	
 	var isFirstTime = localStorage.getItem("isFirstTime");
 	if(isFirstTime != "yes"){
 		Android.createMiscCategory();
 	}
 	localStorage.setItem("isFirstTime","yes");
+	refreshHome();
 });
+
+// override trim to remove first and last spaces
+if (typeof String.prototype.trim != 'function') { // detect native implementation
+  		String.prototype.trim = function () {
+    		return this.replace(/^\s+/, '').replace(/\s+$/, '');
+  	};
+}

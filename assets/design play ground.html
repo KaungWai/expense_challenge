@@ -11,8 +11,31 @@
 </head>
 
 <body>
-        <select id="sltPlan" class="planSelectBoxStyle" onchange="getGraphDataByPlanId(this.value);">
-
-        </select>
+<canvas id="chart" style="width: 800px;height: 400px;"></canvas>
 </body>
+<script type="text/javascript">
+    ctx = document.getElementById('chart').getContext('2d');
+    iChart = new Chart(ctx,{
+        type : 'bar',
+        data : {
+              labels : [],
+            datasets : [{
+               label : 'Usage',
+                data : []
+            }],
+        },
+        options: {
+            legend: {
+                display : false
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+</script>
 </html>

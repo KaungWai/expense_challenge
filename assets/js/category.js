@@ -7,6 +7,9 @@ $(document).ready(function(){
 		$("#overlay").show();
 		$("#category-input-title").html("New Category Name");
 		$("#btnAddCategoryName").html("Add");
+		$("#btnAddCategoryName").attr("disabled", "true");
+		// clear input 
+		$("#category-name").val("");
 		$("#category-input-box").fadeIn(100);
 	});
 
@@ -40,7 +43,7 @@ $(document).ready(function(){
 
 	$("#btnDeleteCategoryName").click(function(){
 		$("#category-option-box").hide();
-		$("#confirm-notice").html("<strong>"+selected_cat_name+"</strong> will be deleted and expanse logs under this category will be moved to <strong>Misc</strong>.");
+		$("#confirm-notice").html("<strong>"+selected_cat_name+"</strong> will be deleted and expense logs under this category will be moved to <strong>Misc</strong>.");
 		$("#category-confirm-box").fadeIn(200);
 	});
 
@@ -79,11 +82,14 @@ function getAllCategories(){
 			var id = cats[i].id;
 			var name = cats[i].name;
 
-			content += "<div class='cat'>";
+			content += "<div class='panel panel-info'>";
+			content += "<div class='panel-heading'>"
 			if(i==0)
-				content += "<span class='glyphicon glyphicon-option-vertical cat_item' cat_id="+id+" cat_name='"+name+"'></span>" + name
+				content += "<span class='glyphicon glyphicon-chevron-down cat_item' cat_id="+id+" cat_name='"+name+"'></span>&nbsp;&nbsp;" + name
 			else
-				content += "<span class='glyphicon glyphicon-option-vertical cat_item cat_items' cat_id="+id+" cat_name='"+name+"'></span>" + name
+				content += "<span class='glyphicon glyphicon-chevron-down cat_item cat_items' cat_id="+id+" cat_name='"+name+"'></span>&nbsp;&nbsp;" + name
+			content += "</div>";
+			content += "<div class='panel-body'></div>";
 			content += "</div>";
 		}
 		$("#categoryAutoGenWrapperTag").html(content);
@@ -117,7 +123,7 @@ function getDoughnutDataByPlanId(planId){
 
 	for(i=0;i<graph.length;i++){
 		name[i] = graph[i].name;
-		amount[i] = graph[i].amount;
+		amount[i] = parseFloat(graph[i].amount).toFixed(2);
 		color[i] = getRandomColor();
 	}
 
@@ -147,6 +153,18 @@ function updateCategory(id,name){
 	Android.updateCategory(id,name);
 }
 
+function categoryInputValidate(name){
+	name = name.trim();
+	if(name == ""){
+		Android.showText("Category name can't be empty!");
+		$("#btnAddCategoryName").attr("disabled", "true");
+	}
+	else{
+		//remove diable attribute
+		$("#btnAddCategoryName").removeAttr("disabled");
+	}
+}
+
 function getRandomColor(){
 	var r = Math.floor(Math.random()*(255-1+1)+1);
 	var g = Math.floor(Math.random()*(255-1+1)+1);
@@ -165,10 +183,8 @@ function refreshCategory(){
 		else{
 			getDoughnutDataByPlanId(0);
 		}
-		
 	}
 	catch(e){
 		alert(e);
 	}
-
 }

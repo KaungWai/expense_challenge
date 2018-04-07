@@ -51,7 +51,7 @@
 			<br>
 			<input type="datetime-local" min="2018-03-27" id="new_expense_date_time"/>
 			<br>
-			<select id="new_expanse_category_select" class="btnControls" >
+			<select id="new_expanse_category_select" class="planSelectBoxStyle">
 
 			</select>
 			<textarea id="new_expense_remark" rows="1" class="keyboard_input" placeholder="Remark"></textarea>
@@ -89,9 +89,9 @@
 		</div>
 		<div class="col-xs-12 col-sm-12 col-md-12" id="category-input-box">
 			<span class="box_title" id="category-input-title"></span>
-			<input type="text" id="category-name" placeholder="Category Name" maxlength="30"/>
+			<input type="text" id="category-name" placeholder="Category Name" maxlength="30" onkeyup="categoryInputValidate(this.value);" maxlength="25" />
 			<br>
-			<button class="btnControls" id="btnAddCategoryName"></button>
+			<button class="btnControls" id="btnAddCategoryName" ></button>
 			<button class="btnControls" id="btnCancelCategoryName">Cancel</button>
 		</div>
 		<div class="col-xs-12 col-sm-12 col-md-12" id="category-option-box">
@@ -121,7 +121,7 @@
 			<hr>
 			<span style="font-size: 18px;font-weight: bold;">Older Plans</span>
 			<span id="olderPlanAutoGeneratorTag">
-				
+			
 			</span>
 
 		</div>
@@ -131,15 +131,16 @@
 
 		<div id="create_new_plan_box">
 			<span class="box_title">New Plan</span>
-			<input type="text" id="new_plan_name" placeholder="Plan Name">
+			<input type="text" id="new_plan_name" placeholder="Plan Name" maxlength="20">
 			<br>
-			<input type="date" id="new_plan_start_date" class="dateInput"/><span id="karamade">~</span><input type="date" id="new_plan_end_date" class="dateInput" />
+			<input type="date" id="new_plan_start_date" class="dateInput" readonly="" /><span id="karamade">~</span><input type="date" id="new_plan_end_date" class="dateInput" />
 			<br>
-			<input type="number" id="new_plan_amount" placeholder="Amount">
+			<input type="number" id="new_plan_amount" placeholder="Amount" maxlength="8">
 			<br>
 			<button class="btnControls" id="btnCreatPlan">Create</button>
 			<button class="btnControls" id="btnCancelPlan">Cancel</button>
 		</div>
+
 	</div><!-- plan -->
 
 	<div id="log-con"><!-- log -->
@@ -222,6 +223,5 @@
 	<script type="text/javascript" src="js/expense.js"></script>
 	<script type="text/javascript" src="js/category.js"></script>
 	<script type="text/javascript" src="js/plan.js"></script>
-	
 </body>
 </html>

@@ -1,27 +1,19 @@
-
-
 $(document).ready(function(){
-
 	$("#btnExpansePlus").click(function(){
-		setDateTime();
-		$(this).hide();
-		$("#overlay").show();
-		$("#expense_input_box").fadeIn(100);
+		var p = Android.checkCurrentPlan();
+		if(p!="0"){
+			$(this).hide();
+			$("#overlay").show();
+			$("#expense_input_box").fadeIn(100);
+			newExpenseReady();
+		}
+		else{
+			Android.showText("Create a plan first.");
+		}
 	});
 
 	$("#btn_new_expense_add").click(function(){
-		var failOrKeep = addExpense();
-		if(failOrKeep == "fail"){
-			$("#expense_input_box").hide();
-			$("#failBox").show();
-		}
-		else{
-			$("#expense_input_box").hide();
-			$("#overlay").hide();
-			$("#btnExpansePlus").show();
-		}
-		
-		refreshHome();
+		validateAndAddExpense();
 	});
 	
 	$("#okIfail").click(function(){
@@ -38,17 +30,6 @@ $(document).ready(function(){
 
 	
 });
-
-function addExpense(){
-	var amount = $("#new_expense_amount").val();
-	var dateTime = $("#new_expense_date_time").val();
-	var date = dateTime.substring(0, 10);
-	var time = dateTime.substring(11, 16);
-	var categoryId = $("#new_expanse_category_select").val();
-	var remark = $("#new_expense_remark").val();
-	// return string to decide whether just failed or keep going
-	return Android.addExpense(amount, date, time, categoryId, remark);
-}
 
 function planSelectBoxGenerate(){
 	var content = "";
@@ -119,7 +100,7 @@ function getExpensesByPlanId(planId){
 			content += "<div class='panel panel-info'>";
 			content += 		"<div class='panel-heading'>";
 			content += 			"<span class='log_category_name'>"+categoryName+"</span>";
-			content += 			"<span class='log_expense_amount'>"+amount+"</span>";
+			content += 			"<span class='log_expense_amount'>"+parseFloat(amount).toFixed(2)+"</span>";
 			content += 		"</div>";
 			content += 		"<div class='panel-body align-left'>";
 			content += 			"<h5 class='log_expense_dateTime'>" + time + "&nbsp;&nbsp;&nbsp;" + date +"</h5>";
@@ -140,33 +121,15 @@ function getExpensesByPlanId(planId){
 	}
 }
 
-function setDateTime(){
-	var currentdate = new Date(); 
-    var yyyy = currentdate.getFullYear();
-    var mm = (currentdate.getMonth()+1)+"";
-    var dd = currentdate.getDate()+"";
-    var hr = currentdate.getHours()+"";
-    var mi = currentdate.getMinutes()+"";
-    if(mm.length == 1) mm = "0"+mm;
-    if(dd.length == 1) dd = "0"+dd;
-    if(hr.length == 1) hr = "0"+hr;
-    if(mi.length == 1) mi = "0"+mi;
-    var dt = yyyy+"-"+mm+"-"+dd+"T"+hr+":"+mi;
-	$("#new_expense_date_time").val(dt);
-}
-
 function categorySelectBoxGenerate(){
 	var content = "";
 	var data = Android.getAllCategories();
 	try{
-		var cats = JSON.parse(data);
-		content += "<option>Select Category</option>";		
+		var cats = JSON.parse(data);	
 		for(i=0;i<cats.length;i++){
 			var id = cats[i].id;
 			var name = cats[i].name;
-
 			content += "<option value='"+id+"'>"+name+"</option>";
-
 		}
 		$("#new_expanse_category_select").html(content);
 	}
@@ -243,7 +206,75 @@ function homeCurrentPlan(){
 		$("#homeCurrentPlanGenerator").html(e+"<br>"+data);
 	}
 }
+function newExpenseReady(){
+	$("#new_expense_amount").val("");
+	setDateTime();
+	categorySelectBoxGenerate();
+	$("#new_expense_remark").val("");
+}
 
+function setDateTime(){
+	var currentdate = new Date(); 
+    var yyyy = currentdate.getFullYear();
+    var mm = (currentdate.getMonth()+1)+"";
+    var dd = currentdate.getDate()+"";
+    var hr = currentdate.getHours()+"";
+    var mi = currentdate.getMinutes()+"";
+    if(mm.length == 1) mm = "0"+mm;
+    if(dd.length == 1) dd = "0"+dd;
+    if(hr.length == 1) hr = "0"+hr;
+    if(mi.length == 1) mi = "0"+mi;
+    var dt = yyyy+"-"+mm+"-"+dd+"T"+hr+":"+mi;
+	$("#new_expense_date_time").val(dt);
+	$("#new_expense_date_time").attr("max",dt);
+
+	var data = Android.getCurrentPlan();
+	var plan = JSON.parse(data);
+	var startDate = plan[0].startDate;
+	dt = startDate + "T00:00";
+	$("#new_expense_date_time").attr("min",dt);
+}
+
+function validateAndAddExpense(){
+	var amount;
+	var dateTime = $("#new_expense_date_time").val();
+	var date = dateTime.substring(0, 10);
+	var time = dateTime.substring(11, 16);
+	var categoryId = $("#new_expanse_category_select").val();
+	var remark = $("#new_expense_remark").val();
+	var errMessage = "Error";
+
+
+	var x = $("#new_expense_amount").val()+"";
+    var y = x.split(".");
+    if((y.length==1 || y.length==2) && x!=""){
+        amount = parseFloat(x).toFixed(2);
+    }
+    if(!amount || amount<=0){
+        errMessage += "\nPlease insert valid amount.";
+    }
+    if(dateTime==""){
+    	errMessage += "\nPlease select date and time.";
+    }
+
+    if(errMessage=="Error"){
+    	var failOrKeep = Android.addExpense(amount, date, time, categoryId, remark);
+		if(failOrKeep == "fail"){
+			$("#expense_input_box").hide();
+			$("#failBox").show();
+		}
+		else{
+			$("#expense_input_box").hide();
+			$("#overlay").hide();
+			$("#btnExpansePlus").show();
+		}
+		refreshHome();
+    }
+    else{
+    	Android.showText(errMessage);
+    }
+
+}
 function refreshHome(){
 	try{
 		categorySelectBoxGenerate();

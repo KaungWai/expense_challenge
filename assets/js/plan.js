@@ -1,23 +1,27 @@
 $(document).ready(function(){
 	
 	$("#btnPlusPlan").click(function(){
-		$(this).hide();
-		$("#overlay").show();
-		$("#create_new_plan_box").fadeIn(100);
+		var p = Android.checkCurrentPlan();
+		if(p == "0"){
+			$(this).hide();
+			$("#overlay").show();
+			$("#create_new_plan_box").fadeIn(100);
+			planInputBoxReady();			
+		}
+		else{
+			Android.showText("Already having a current plan.");
+		}
+
 	});
+
 	$("#btnCancelPlan").click(function(){
 		$("#overlay").hide();
 		$("#create_new_plan_box").hide();
 		$("#btnPlusPlan").show();
 	});
+	
 	$("#btnCreatPlan").click(function(){
-		$("#overlay").hide();
-		$("#create_new_plan_box").hide();
-		$("#btnPlusPlan").show();
-		addPlan();
-		getCurrentPlan();
-		getOlderPlans();
-		planSelectBoxGenerate();
+		validateAndCreatPlan();
 	});
 });
 
@@ -117,12 +121,75 @@ function getOlderPlans(){
 	}
 }
 
+function planInputBoxReady(){
+    $("#new_plan_name").val("");
+    $("#new_plan_end_date").val("");
+    $("#new_plan_amount").val("");
+
+    var currentdate = new Date(); 
+    var yyyy = currentdate.getFullYear();
+    var mm = (currentdate.getMonth()+1)+"";
+    var dd = currentdate.getDate()+"";
+    if(mm.length == 1) mm = "0"+mm;
+    if(dd.length == 1) dd = "0"+dd;
+    var dt = yyyy+"-"+mm+"-"+dd;
+    $("#new_plan_start_date").val(dt);
+    $("#new_plan_end_date").attr("min",dt);
+
+    var nextYear = yyyy + 1;
+    var nextMonth = currentdate.getMonth()+1;
+    var nextDay = currentdate.getDate();
+    if(nextMonth==2 && nextDay>=28 && leapYear(nextYear)){
+        nextDay = 29;
+    }
+
+    nextMonth = nextMonth + "";
+    nextDay = nextDay + "";
+    if(nextMonth.length == 1) nextMonth = "0"+nextMonth;
+    if(nextDay.length == 1) nextDay = "0"+nextDay;
+    dt = nextYear+"-"+nextMonth+"-"+nextDay;
+
+    $("#new_plan_end_date").attr("max",dt);
+}
+
 function addPlan(){
 	var planName = $("#new_plan_name").val();
 	var planStartDate = $("#new_plan_start_date").val();
 	var planEndDate = $("#new_plan_end_date").val();
 	var planAmount = parseInt($("#new_plan_amount").val());
 	Android.addPlan(planName,planStartDate,planEndDate,planAmount);
+}
+
+function validateAndCreatPlan(){
+    var errMessage = "Error";
+    var planName = $("#new_plan_name").val();planName = planName.trim();
+    if(planName=="") errMessage += "\nPlan name can't be empty.";
+    
+    var planStartDate = $("#new_plan_start_date").val();
+    var planEndDate = $("#new_plan_end_date").val();
+    if(planEndDate=="") errMessage += "\nPlan end date can't be empty.";
+
+    var x = $("#new_plan_amount").val()+"";
+    var y = x.split(".");
+    var amount;
+
+    if((y.length==1 || y.length==2) && x!=""){
+        amount = parseFloat(x).toFixed(2);
+    }
+    if(!amount || amount<=0){
+        errMessage += "\nPlease insert valid amount.";
+    }
+
+    if(errMessage=="Error"){
+        $("#overlay").hide();
+        $("#create_new_plan_box").hide();
+        $("#btnPlusPlan").show();
+        Android.addPlan(planName,planStartDate,planEndDate,amount);
+        refreshPlan();
+    }
+    else{
+        Android.showText(errMessage);
+    }
 }
 
 function refreshPlan(){

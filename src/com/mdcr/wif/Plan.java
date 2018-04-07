@@ -1,13 +1,11 @@
 package com.mdcr.wif;
 
-import java.sql.Date;
-
 public class Plan {
 	 private int id;
 	 private String name;
 	 private String startDate;
 	 private String endDate;
-	 private int amount;
+	 private float amount;
 	 private int status;
 	 
 	 public Plan(){}
@@ -59,11 +57,11 @@ public class Plan {
 		 this.endDate = endDate;
 	 }
 	
-	 public int getAmount() {
+	 public float getAmount() {
 		 return amount;
 	 }
 
-	 public void setAmount(int amount) {
+	 public void setAmount(float amount) {
 		 this.amount = amount;
 	 }
 

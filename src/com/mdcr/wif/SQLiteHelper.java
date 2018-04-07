@@ -30,7 +30,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 		// Category Table
 		String CREATE_CATEGORY_TABLE = "CREATE TABLE CategoryDB (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)";
 		// Plan Table
-		String CREATE_PLAN_TABLE = "CREATE TABLE PlanDB (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, startDate TEXT, endDate TEXT, amount INTEGER, status INTEGER)";
+		String CREATE_PLAN_TABLE = "CREATE TABLE PlanDB (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, startDate TEXT, endDate TEXT, amount REAL, status INTEGER)";
 		// Expense Table
 		String CREATE_EXPENSE_TABLE = "CREATE TABLE ExpenseDB (id INTEGER PRIMARY KEY AUTOINCREMENT, categoryId INTEGER, planId INTEGER, date TEXT, time TEXT, amount REAL, remark TEXT, FOREIGN KEY (categoryId) REFERENCES CategoryDB (id) , FOREIGN KEY (PlanId) REFERENCES PlanDB(id))";
 		
@@ -75,7 +75,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 	private static final String KEY_PLAN_END_DATE = "endDate";
 	private static final String KEY_PLAN_AMOUNT = "amount";
 	private static final String KEY_PLAN_STATUS = "status";
-	//------------------------------------------------------------------------//
+//----------------------------------------------------------------------------------------------------------//
 	// Expense table name
 	private static final String TABLE_EXPENSE = "ExpenseDB";
 	// Expense Columns names
@@ -396,7 +396,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 			List<Expense> expenses = new LinkedList<Expense>();
 
 			// 1. build the query
-			String query = "SELECT E.id, E.planId, E.categoryId, C.name, E.date, E.time, E.amount, E.remark FROM " + TABLE_EXPENSE + " E LEFT OUTER JOIN " + TABLE_CATEGORIES + " C ON E.categoryId = C.id WHERE E.planId = " + planId + " ORDER BY E.date DESC";
+			String query = "SELECT E.id, E.planId, E.categoryId, C.name, E.date, E.time, E.amount, E.remark FROM " + TABLE_EXPENSE + " E LEFT OUTER JOIN " + TABLE_CATEGORIES + " C ON E.categoryId = C.id WHERE E.planId = " + planId + " ORDER BY E.date DESC, E.time DESC";
 
 			// 2. get reference to writable DB
 			SQLiteDatabase db = this.getWritableDatabase();

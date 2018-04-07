@@ -6,7 +6,9 @@ import org.json.JSONObject;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.view.Gravity;
 import android.webkit.JavascriptInterface;
+import android.widget.Toast;
 
 public class WebAppInterface {
 	Context mContext;
@@ -108,13 +110,13 @@ public class WebAppInterface {
 	}
 //----------------------------------------------------------------------------------------------------------//
 	@JavascriptInterface
-	public String addPlan(String name,String startDate, String endDate, int amount){
+	public String addPlan(String name,String startDate, String endDate, String amount){
 		SQLiteHelper db = new SQLiteHelper(mContext);
 		Plan p = new Plan();
 		p.setName(name);
 		p.setStartDate(startDate);
 		p.setEndDate(endDate);
-		p.setAmount(amount);
+		p.setAmount(Float.parseFloat(amount));
 		p.setStatus(0);
 		return db.addPlan(p);
 	}
@@ -258,5 +260,12 @@ public class WebAppInterface {
 		}
 		ret += "]";
 		return ret;
+	}
+//---------------------------------------------------------------------------------------------------------//
+	@JavascriptInterface
+	public void showText(String text){
+		Toast t = Toast.makeText(mContext, text, Toast.LENGTH_SHORT);
+		t.setGravity(Gravity.CENTER_VERTICAL,0,0);
+		t.show();
 	}
 }

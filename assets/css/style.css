@@ -389,6 +389,7 @@
 .panel{
 	margin-top: 10px;
 	box-shadow: 1px 1px 1px #aaa;
+	margin-bottom: 0px;
 }
 .panel-heading{
 	font-size: 18px;
@@ -411,5 +412,9 @@
 	text-align: left;
 	text-indent: 6px;
 	color: #000;
+}
+.glyphicon{
+	position: relative;
+	top:4px;
 }
 /* bootstrap override */
