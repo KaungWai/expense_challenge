@@ -195,6 +195,18 @@ public class WebAppInterface {
 		SQLiteHelper db = new SQLiteHelper(mContext);
 		db.winPlan();
 	}
+	
+	@JavascriptInterface
+	public void abortPlan(){
+		SQLiteHelper db = new SQLiteHelper(mContext);
+		db.abortPlan();
+	}
+	
+	@JavascriptInterface
+	public void removePlanFromHistory(String planId){
+		SQLiteHelper db = new SQLiteHelper(mContext);
+		db.removePlanFromHistory(Integer.valueOf(planId));
+	}
 //----------------------------------------------------------------------------------------------------------//
 	@JavascriptInterface
 	public String addExpense(String amount, String date, String time, String categoryId, String remark){

@@ -8,17 +8,99 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 </head>
 <body>
+	<div id="splash">
+		<img src="image/launcher_icon.png" class="img" style="margin-top: 100px;width: 50%;margin-left: 25%;">
+		<h2 style="text-align: center;font-weight: bold;color: #fff;">Expense Challenge</h2>
+		<div id="splashBtnCon">
+			<button id="btnGuide" class="btnSplash" onclick="userGuideShow();">Guide</button>
+			<button id="btnSkip" class="btnSplash" onclick="splashSkip();">Skip</button>
+		</div>
+	</div>
 	<div id="menuScreen">
 		<div id="btnCloseMenu">
 			<div class="stripe"></div>
 			<div class="stripe"></div>
 			<div class="stripe"></div>
 		</div>
+
+		<ul class="list-group" style="margin-top: 200px;">
+			<li class="list-group-item active">Expense Challenge</li>
+			<li class="list-group-item" onclick="userGuideShow();">App user guide</li>
+			<li class="list-group-item" onclick="about();">About</li>
+		</ul>
 	</div>
 	<div id="overlay">
 		
 	</div>
+<!-- user guide start -->
+<div class="col-xs-12 col-sm-12 col-md-12" id="userGuide">
+	<center>
+		<br>
+		<button class="btn" onclick="userGuideHide();">Exit user guide</button>
+		<br>
+		<br>
+	</center>
+	To make a challenge, you need to create a expense plan first.
+	<img src="image/guide/ss01.png" width="100%" class="img img-thumbnail"/>
+	<hr>
+	Fills the required input boxes and tap the create button.
+	<img src="image/guide/ss02.png" width="100%" class="img img-thumbnail"/>
+	<hr>
+	Your current expense plan will appear as the following.
+	<img src="image/guide/ss03.png" width="100%" class="img img-thumbnail"/>
+	<hr>
+	<strong>Misc</strong> is the default expense category and you can't delete or edit it.
+	<img src="image/guide/ss04.png" width="100%" class="img img-thumbnail"/>
+	<hr>
+	You can also create your custom expense categories.
+	<img src="image/guide/ss05.png" width="100%" class="img img-thumbnail"/>
+	<hr>
+	It's time to note your every expenses.
+	<img src="image/guide/ss06.png" width="100%" class="img img-thumbnail"/>
+	<hr>
+	Fills the required input boxes and tap the add button.
+	<img src="image/guide/ss07.png" width="100%" class="img img-thumbnail"/>
+	<hr>
+	Tap the bar chart to check your daily total usage.
+	<img src="image/guide/ss08.png" width="100%" class="img img-thumbnail"/>
+	<hr>
+	Tap the doughnut to check the total usage by category of current plan.
+	<img src="image/guide/ss09.png" width="100%" class="img img-thumbnail"/>
+	<hr>
+	You can view your detailed expense logs in log tab.
+	<img src="image/guide/ss10.png" width="100%" class="img img-thumbnail"/>
+	<hr>
+	<strong>Expense Challenge</strong> is extremly simple application but can help you to motivate and won your expense challenges.
+	<center>
+		<br>
+		<button class="btn" onclick="userGuideHide();">Exit user guide</button>
+		<br>
+		<br>
+	</center>
+</div>
+<!-- user guide end -->
+<div id="aboutBox">
+	<span class="box_title">Expense Challenge</span>
 
+	<table border="0" width="100%">
+		<tr>
+			<td style="text-align: right;">Version</td>
+			<td>&nbsp;:&nbsp;</td>
+			<td style="text-align: left;">1.0</td>
+		</tr>
+		<tr>
+			<td style="text-align: right;">Release Date</td>
+			<td>&nbsp;:&nbsp;</td>
+			<td style="text-align: left;">10/04/2018</td>
+		</tr>
+		<tr>
+			<td style="text-align: right;">Developers</td>
+			<td>&nbsp;:&nbsp;</td>
+			<td style="text-align: left;">KW, TZ</td>
+		</tr>
+	</table>
+	<button id="btnCloseAbout" onclick="$('#overlay').hide();$('#aboutBox').hide();">Close</button>
+</div>
 	<div class="col-xs-12 col-sm-12 col-md-12 headBar">
 	Expense Challenge
 		<div id="btnMenu">
@@ -148,7 +230,18 @@
 			<button class="btnControls" id="btnCreatPlan">Create</button>
 			<button class="btnControls" id="btnCancelPlan">Cancel</button>
 		</div>
-
+		<div class="col-xs-12 col-sm-12 col-md-12" id="cp-option-box">
+			<span class="box_title">Options</span>
+			<button class="btnControls" id="btnAbortPlan">Abort plan</button>
+			<br>
+			<button class="btnControls btnCancelPlanOption">Cancel</button>
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-12" id="op-option-box">
+			<span class="box_title">Options</span>
+			<button class="btnControls" id="btnPlanRemoveFromHistory">Remove form history</button>
+			<br>
+			<button class="btnControls btnCancelPlanOption">Cancel</button>
+		</div>
 	</div><!-- plan -->
 
 	<div id="log-con"><!-- log -->

@@ -398,6 +398,22 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 		db.execSQL(query);
 		db.close();
 	}
+	
+	public void abortPlan(){
+		SQLiteDatabase db = this.getWritableDatabase();
+		String query = "UPDATE " + TABLE_PLANS + " SET " + KEY_PLAN_STATUS + " = 3 WHERE " + KEY_PLAN_STATUS + " = 0";
+		db.execSQL(query);
+		db.close();
+	}
+	
+	public void removePlanFromHistory(int planId){
+		SQLiteDatabase db = this.getWritableDatabase();
+		String query1 = "DELETE FROM " + TABLE_EXPENSE + " WHERE " + KEY_EXPENSE_PLANID + " = " + planId;
+		String query2 = "DELETE FROM " + TABLE_PLANS + " WHERE " + KEY_PLAN_ID + " = " + planId;
+		db.execSQL(query1);
+		db.execSQL(query2);
+		db.close();
+	}
 	// Get expenses by Plan
 		public List<Expense> getExpensesByPlanId(int planId) {
 			List<Expense> expenses = new LinkedList<Expense>();

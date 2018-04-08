@@ -1,3 +1,64 @@
+#aboutBox{
+	text-align: center;
+	font-size: 18px;
+	width: 100%;
+	padding: 5%;
+	background-color: #fff;
+	border: 1px solid #eee;
+	position: fixed;
+	bottom: 0px;
+	z-index: 901;
+	display: none;
+}
+#btnCloseAbout{
+	margin-top: 10px;
+	width: 100%;
+	height: 35px;
+	padding-left: 5px;
+	background-color: #fff;
+	border: 1px solid #000;
+	font-size: 16px;
+	outline: none;
+	border-radius: 5px;
+}
+#splash{
+	background-color: #4fc3fc;
+	z-index: 999;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+}
+.btnSplash{
+	width: 50%;
+	margin-left: 25%;
+	margin-bottom: 20px;
+	height: 35px;
+	font-size: 18px;
+	background-color: rgba(0,0,0,0);
+	border:1px solid #fff;
+	color: #fff;
+	border-radius: 5px;
+	display: none;
+}
+#splashBtnCon{
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+}
+#userGuide{
+	font-size: 18px;
+	z-index: 998;
+	display: none;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	background-color: rgb(250,245,250);
+}
 .headBar{
     background-color: #5bc0de;
     font-size: 24px;
@@ -15,12 +76,16 @@
 	width: 0%;
 	height: 100%;
 	padding-top: 5px;
-	background-color: #fff;
     box-shadow: 1px 1px 10px #999;
     position: fixed;
     top: 0px;
     right: 0px;
     z-index: 999;
+    background-image: url(../image/launcher_icon.png);
+    background-size: 50%;
+    background-position: center 60px;
+    background-repeat: no-repeat;
+    background-color: #fff;
 }
 #overlay{
 	width: 100%;
@@ -371,6 +436,31 @@
 #btnCreatPlan , #btnCancelPlan {
 	width: 49%;
 }
+#op-option-box , #cp-option-box{
+	text-align: center;
+	font-size: 18px;
+	width: 100%;
+	padding: 5%;
+	background-color: #fff;
+	border: 1px solid #eee;
+	position: fixed;
+	bottom: 0px;
+	z-index: 901;
+	display: none;
+}
+#btnAbortPlan , #btnPlanRemoveFromHistory , .btnCancelPlanOption{
+	width: 100%;
+	height: 35px;
+	padding-left: 5px;
+	background-color: #fff;
+	border: 1px solid #000;
+	font-size: 16px;
+	outline: none;
+	border-radius: 5px;
+}
+.btnCancelPlanOption{
+	margin-top: 10px;
+}
 /* paln-con end */
 /* log-con start */
 .log_expense_amount{
@@ -429,5 +519,13 @@
 }
 .label{
 	float: right;
+}
+.img{
+	width: 100%;
+	margin-top: 10px;
+}
+.list-group-item{
+	font-size: 18px;
+	text-align: center;
 }
 /* bootstrap override */

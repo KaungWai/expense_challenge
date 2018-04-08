@@ -301,6 +301,7 @@ function refreshHome(){
 
 function refreshExpenseLog(){
 	try{
+		planSelectBoxGenerate();
 		var planId = $("#view_log_plan_select").val();
 		if(planId>0){
 			getExpensesByPlanId(planId);

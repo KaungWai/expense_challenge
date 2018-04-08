@@ -1,3 +1,4 @@
+var selected_p_id = "";
 $(document).ready(function(){
 	
 	$("#btnPlusPlan").click(function(){
@@ -19,7 +20,29 @@ $(document).ready(function(){
 		$("#create_new_plan_box").hide();
 		$("#btnPlusPlan").show();
 	});
-	
+
+	$(".btnCancelPlanOption").click(function(){
+		$("#overlay").hide();
+		$("#cp-option-box,#op-option-box").hide();
+		$("#btnPlusPlan").show();
+	});
+
+	$("#btnAbortPlan").click(function(){
+		$("#overlay").hide();
+		$("#cp-option-box,#op-option-box").hide();
+		$("#btnPlusPlan").show();
+		Android.abortPlan();
+		refreshPlan();
+	});
+
+	$("#btnPlanRemoveFromHistory").click(function(){
+		$("#overlay").hide();
+		$("#cp-option-box,#op-option-box").hide();
+		$("#btnPlusPlan").show();
+		Android.removePlanFromHistory(selected_p_id);
+		refreshPlan();
+	});
+
 	$("#btnCreatPlan").click(function(){
 		validateAndCreatPlan();
 	});
@@ -41,7 +64,7 @@ function getCurrentPlan(){
 				var usedPercent =  parseInt(usedAmount*100 / planAmount);
 
 				content += "<div class='panel panel-info'>";
-				content += "<div class='panel-heading'>"+name+"</div>";
+				content += "<div class='panel-heading'>"+"<span class='glyphicon glyphicon-chevron-down cp'></span>&nbsp;&nbsp;"+name+"</div>";
 				content += "<div class='panel-body'>";
 				content += "<span class='plan_start_date'>"+startDate+"</span>";
 				content += "<span class='plan_amount'>"+planAmount+"</span>";
@@ -57,6 +80,11 @@ function getCurrentPlan(){
 				content += "</div>";
 			}
 			$("#currentPlanAutoGeneratorTag").html(content);
+
+			$(".cp").click(function(){
+				$("#overlay").show();
+				$("#cp-option-box").show();
+			});
 		}
 		else{
 			$("#currentPlanAutoGeneratorTag").html("<h3 style='text-align:center;color:#ccc;'>NO CURRENT PLAN</h3>");
@@ -94,7 +122,7 @@ function getOlderPlans(){
 					status = "<span class='label label-danger'>Aborted</span>";
 				}
 				content += "<div class='panel panel-info'>";
-				content += "<div class='panel-heading'>"+name+status+"</div>";
+				content += "<div class='panel-heading'>"+"<span class='glyphicon glyphicon-chevron-down op' pid='"+id+"'></span>&nbsp;&nbsp;"+name+status+"</div>";
 				content += "<div class='panel-body'>";
 				content += "<span class='plan_start_date'>"+startDate+"</span>";
 				content += "<span class='plan_amount'>"+planAmount+"</span>";
@@ -106,10 +134,16 @@ function getOlderPlans(){
 				content += "</div>";
 				content += "</div>";
 				content += usedAmount+" Used";
-				content += "</div>"
+				content += "</div>";
 				content += "</div>";
 			}
 			$("#olderPlanAutoGeneratorTag").html(content);
+
+			$(".op").click(function(){
+				selected_p_id = $(this).attr("pid");
+				$("#overlay").show();
+				$("#op-option-box").show();
+			});
 		}
 		else{
 			$("#olderPlanAutoGeneratorTag").html("<h3 style='text-align:center;color:#ccc;'>NO OLDER PLANS</h3>");
@@ -175,7 +209,7 @@ function validateAndCreatPlan(){
     if((y.length==1 || y.length==2) && x!=""){
         amount = parseFloat(x).toFixed(2);
     }
-    if(!amount || amount<=0){
+    if(!amount || amount<1){
         errMessage += "\nPlease insert valid amount.";
     }
 

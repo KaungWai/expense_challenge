@@ -1,13 +1,11 @@
 /* for page preparing */
 $(document).ready(function(){
 	var headBarHeight = $(".headBar").outerHeight();
-	console.log(headBarHeight);
 	$("#pd-top").css({
 		"height":headBarHeight+"px"
 	});
 
 	var naviBarHeight = $("#barNavi").outerHeight() + 10;
-	console.log(naviBarHeight);
 	$("#pd-btn").css({
 		"height":naviBarHeight+"px"
 	});
@@ -15,7 +13,13 @@ $(document).ready(function(){
 	winPlan();
 	var isFirstTime = localStorage.getItem("isFirstTime");
 	if(isFirstTime != "yes"){
+		$("#splash").show();$(".btnSplash").show();
 		Android.createMiscCategory();
+	}
+	else{
+		$("#splash").animate({width:"100%"},2000,function(){
+			$("#splash").hide();
+		});
 	}
 	localStorage.setItem("isFirstTime","yes");
 	refreshHome();

@@ -82,7 +82,7 @@ function getAllCategories(){
 			var id = cats[i].id;
 			var name = cats[i].name;
 
-			content += "<div class='panel panel-info'>";
+			content += "<div class='panel panel-default'>";
 			content += "<div class='panel-heading'>"
 			if(i==0)
 				content += "<span class='glyphicon glyphicon-chevron-down cat_item' cat_id="+id+" cat_name='"+name+"'></span>&nbsp;&nbsp;" + name
@@ -175,6 +175,7 @@ function getRandomColor(){
 
 function refreshCategory(){
 	try{
+		planSelectBoxGenerate();
 		getAllCategories();
 		var planId = $("#category_plan_select_box").val();
 		if(planId>0){
